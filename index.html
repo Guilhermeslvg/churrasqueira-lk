@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hearth &amp; Slab — Outdoor Kitchens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fg:#0d0c0b;
+  --fg-soft:rgba(13,12,11,.64);
+  --fg-faint:rgba(13,12,11,.42);
+  --shade:#f2f0ec;
+  --rule:rgba(13,12,11,.16);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pill-bg:#0a0908;
+  --pill-fg:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--shade); color:var(--fg);
+  font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden;
+}
+
+/* ---------- fixed 3D stage ---------- */
+.stage{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--shade)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.veil{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to bottom, rgba(242,240,236,.62) 0%, rgba(242,240,236,.06) 22%, rgba(242,240,236,.06) 78%, rgba(242,240,236,.66) 100%),
+    radial-gradient(100% 80% at 50% 48%, rgba(242,240,236,0) 0%, rgba(242,240,236,.22) 100%);
+}
+.grain{
+  position:absolute;inset:-50%;opacity:.13;mix-blend-mode:multiply;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
+}
+
+/* ---------- part labels (projected from 3D each frame) ---------- */
+.tags{position:fixed;inset:0;z-index:15;pointer-events:none;overflow:hidden}
+.tag{
+  position:absolute;left:0;top:0;opacity:0;will-change:transform,opacity;
+  display:flex;align-items:center;gap:10px;white-space:nowrap;
+  font-size:12.5px;letter-spacing:.02em;color:var(--fg);
+  transform:translate3d(-9999px,-9999px,0);
+}
+.tag .dot{width:7px;height:7px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 0 0 3px rgba(242,240,236,.9);display:flex;align-items:center;justify-content:center}
+.tag .dot i{display:none;font-style:normal;font-size:10px;font-weight:500;color:#fff;letter-spacing:0}
+.legend{display:none;list-style:none;margin-top:14px;gap:6px 14px;flex-wrap:wrap;justify-content:center;font-size:11.5px;letter-spacing:.02em;color:var(--fg-soft)}
+.legend b{font-weight:400;color:var(--fg-faint);margin-right:4px}
+.tag .line{width:34px;height:1px;background:var(--fg);opacity:.55;flex:none}
+.tag .txt{display:flex;flex-direction:column;gap:2px;line-height:1.2;background:rgba(242,240,236,.72);padding:6px 9px;border-radius:4px;backdrop-filter:blur(4px)}
+.tag b{font-weight:500;font-size:12.5px;letter-spacing:-.005em}
+.tag b span{color:var(--fg-faint);font-weight:400;margin-right:8px}
+.tag em{font-style:normal;color:var(--fg-soft);font-size:11px;letter-spacing:.03em}
+.tag.flip{flex-direction:row-reverse}
+.tag.flip .txt{text-align:right}
+
+/* ---------- chrome ---------- */
+.chrome{
+  position:fixed;left:0;right:0;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:max(14px, calc(env(safe-area-inset-top, 0px) + 12px)) clamp(16px, 3.4vw, 44px) 14px;
+  background:linear-gradient(to bottom, rgba(242,240,236,.94) 0%, rgba(242,240,236,.78) 72%, rgba(242,240,236,0) 100%);
+}
+.mark{display:flex;align-items:center;gap:9px;font-size:15px;letter-spacing:-.012em;color:var(--fg);min-width:0;flex-shrink:1;text-decoration:none}
+.mark-star{opacity:.85}
+.nav{display:flex;align-items:center;gap:clamp(14px, 2.4vw, 32px);flex-shrink:0}
+.nav a:not(.pill){color:var(--fg);text-decoration:none;font-size:14.5px;letter-spacing:-.008em;opacity:.88;transition:opacity .3s var(--ease);cursor:pointer}
+.nav a:not(.pill):hover{opacity:1}
+.pill{
+  display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 21px;border-radius:999px;
+  background:var(--pill-bg);color:var(--pill-fg);font-size:14.5px;font-weight:500;letter-spacing:-.008em;text-decoration:none;
+  white-space:nowrap;opacity:1;border:1px solid rgba(10,9,8,.12);box-shadow:0 1px 0 rgba(255,255,255,.10) inset;
+  -webkit-text-fill-color:var(--pill-fg);cursor:pointer;
+  transition:transform .4s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+.nav .pill{color:#fff;-webkit-text-fill-color:#fff}
+.pill:hover,.pill:focus-visible{transform:translateY(-2px);background:#000;color:#fff;-webkit-text-fill-color:#fff}
+.pill:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+
+.foot{
+  position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;
+  padding:14px clamp(16px, 4vw, 24px) max(16px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+  font-size:12px;line-height:1.45;letter-spacing:.02em;color:var(--fg-faint);text-align:center;pointer-events:none;
+  background:linear-gradient(to top, rgba(242,240,236,.92) 0%, rgba(242,240,236,.72) 72%, rgba(242,240,236,0) 100%);
+}
+.meter{position:fixed;top:0;left:0;z-index:50;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--fg);opacity:.55}
+
+/* ---------- panels ---------- */
+.panels{position:fixed;inset:0;z-index:20;pointer-events:none}
+.panel{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:max(104px, calc(env(safe-area-inset-top, 0px) + 88px)) clamp(20px, 5vw, 60px) max(96px, calc(env(safe-area-inset-bottom, 0px) + 80px));
+  opacity:0;will-change:opacity,transform;
+}
+.panel--low{justify-content:flex-end}
+.panel--low h1{font-size:clamp(26px, 3.6vw, 54px);max-width:18ch}
+.panel--low .sub{margin-top:clamp(12px,1.4vw,18px);max-width:40ch}
+.eyebrow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;letter-spacing:.045em;text-transform:uppercase;color:var(--fg-soft);margin-bottom:clamp(16px,2vw,22px);max-width:min(46ch,100%);text-align:center}
+h1{font-weight:400;font-size:clamp(34px, 7.1vw, 104px);line-height:.98;letter-spacing:-.036em;max-width:15ch;text-wrap:balance}
+.sub{margin-top:clamp(18px,2.2vw,28px);font-size:clamp(15px,1.28vw,19px);line-height:1.5;letter-spacing:-.008em;color:var(--fg-soft);max-width:min(46ch,100%);text-wrap:pretty}
+.cta{margin-top:clamp(28px,3.4vw,44px);pointer-events:auto;width:100%;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.cta .pill{height:48px;padding:0 27px;font-size:15px;max-width:min(100%,320px)}
+.hint{margin-top:22px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);display:flex;align-items:center;gap:8px}
+.hint i{display:block;width:1px;height:26px;background:var(--fg-faint);animation:drop 1.8s var(--ease) infinite;transform-origin:0 0}
+@keyframes drop{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:0 100%}}
+.stats{margin-top:clamp(22px,2.6vw,34px);display:flex;gap:clamp(18px,3vw,44px);flex-wrap:wrap;justify-content:center;pointer-events:none}
+.stats div{display:flex;flex-direction:column;gap:3px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-faint)}
+.stats div b{font-weight:400;font-size:clamp(20px,2vw,28px);letter-spacing:-.03em;color:var(--fg);text-transform:none}
+
+/* ---------- preloader ---------- */
+.boot{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--shade);transition:opacity .7s var(--ease), visibility .7s}
+.boot.done{opacity:0;visibility:hidden}
+.boot p{font-size:12.5px;letter-spacing:.05em;color:var(--fg-faint)}
+.bar{width:150px;height:1px;background:var(--rule);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--fg);transform:scaleX(0);transform-origin:0 50%}
+
+/* ---------- scroll track: the only thing with height ---------- */
+.track{position:relative;z-index:1;height:640vh;min-height:3600px}
+
+/* ---------- breakpoints ---------- */
+@media (max-width:900px){
+  .veil{
+    background:
+      linear-gradient(to bottom, rgba(242,240,236,.72) 0%, rgba(242,240,236,.12) 24%, rgba(242,240,236,.12) 76%, rgba(242,240,236,.74) 100%),
+      radial-gradient(100% 80% at 50% 48%, rgba(242,240,236,0) 0%, rgba(242,240,236,.28) 100%);
+  }
+}
+@media (max-width:720px){
+  .nav a:not(.pill){display:none}
+  .mark{font-size:14px}
+  .nav .pill{height:38px;padding:0 16px;font-size:13.5px}
+  h1{max-width:12ch;font-size:clamp(30px, 9.8vw, 52px)}
+  .panel--low h1{font-size:clamp(22px, 6.4vw, 34px)}
+  .sub{font-size:15px;max-width:34ch}
+  .panel{padding:max(92px, calc(env(safe-area-inset-top, 0px) + 76px)) 18px max(88px, calc(env(safe-area-inset-bottom, 0px) + 72px))}
+  .foot{font-size:11px;max-width:34ch;margin:0 auto}
+  .tag .line,.tag .txt{display:none}
+  .tag .dot{width:22px;height:22px}
+  .tag .dot i{display:block}
+  .legend{display:flex}
+}
+@media (max-width:420px){
+  .mark-star{display:none}
+  .nav .pill{height:36px;padding:0 14px;font-size:13px}
+  h1{max-width:11ch;font-size:clamp(28px, 10.5vw, 40px)}
+  .eyebrow{font-size:11px;letter-spacing:.04em;max-width:28ch}
+  .cta .pill{width:100%;max-width:280px;height:44px;padding:0 20px;font-size:14px}
+}
+@media (max-height:520px) and (orientation:landscape){
+  .panel{padding:max(72px, calc(env(safe-area-inset-top, 0px) + 56px)) 24px max(64px, calc(env(safe-area-inset-bottom, 0px) + 48px))}
+  h1{font-size:clamp(28px, 8vh, 44px)}
+  .sub{margin-top:12px;font-size:14px}
+  .cta{margin-top:16px}
+}
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+
+<div class="boot" id="boot"><div class="bar"><i id="bootBar"></i></div><p id="bootPct">LOADING 0%</p></div>
+
+<div class="stage">
+  <canvas id="gl"></canvas>
+  <div class="veil"></div>
+  <div class="grain"></div>
+</div>
+
+<div class="tags" id="tags"></div>
+
+<i class="meter" id="meter"></i>
+
+<header class="chrome">
+  <a class="mark" href="#" data-go="0"><span class="mark-star" aria-hidden="true">&#10037;</span>&nbsp;Hearth &amp; Slab</a>
+  <nav class="nav">
+    <a data-go="0.40">Parts</a>
+    <a data-go="0.80">Process</a>
+    <a class="pill" data-go="1">Get a quote</a>
+  </nav>
+</header>
+
+<main class="panels">
+  <section class="panel" data-panel>
+    <div class="eyebrow">Outdoor kitchens <span>&middot;</span> Franklin, Tennessee</div>
+    <h1>Your kitchen,<br />moved outside.</h1>
+    <p class="sub">Brick, poured concrete and stainless steel, built on your patio in three days. Scroll to see how it comes apart.</p>
+    <div class="cta"><a class="pill" data-go="0.40">See every part</a></div>
+    <div class="hint"><i></i>Scroll</div>
+  </section>
+
+  <section class="panel panel--low" data-panel>
+    <div class="eyebrow">Every part, named</div>
+    <h1>Seven pieces. Zero shortcuts.</h1>
+    <p class="sub">From the brick base to the tap tower, each piece is chosen with you and installed by our own crew. Nothing is subcontracted.</p>
+    <ul class="legend"><li><b>01</b>Brick base</li><li><b>02</b>Concrete counter</li><li><b>03</b>36" grill</li><li><b>04</b>Hood</li><li><b>05</b>Access doors</li><li><b>06</b>Kegerator</li><li><b>07</b>Tap tower</li></ul>
+  </section>
+
+  <section class="panel" data-panel>
+    <div class="eyebrow">On site</div>
+    <h1>Back together<br />by Friday.</h1>
+    <p class="sub">Footings Monday, brick Tuesday, concrete Wednesday, appliances Thursday. You are grilling by the weekend.</p>
+    <div class="stats">
+      <div><b>3 days</b>install</div>
+      <div><b>36"</b>four-burner grill</div>
+      <div><b>10 yr</b>masonry warranty</div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel>
+    <div class="eyebrow">Start here</div>
+    <h1>Built for<br />your backyard.</h1>
+    <p class="sub">Send us a photo of your patio and we will send back a layout and a fixed price within 48 hours.</p>
+    <div class="cta"><a class="pill" href="mailto:hello@hearthandslab.com?subject=Outdoor%20kitchen%20quote">Get a quote</a><a class="pill" href="tel:+16155550142" style="background:transparent;color:var(--fg);-webkit-text-fill-color:var(--fg);border-color:var(--rule)">Call (615) 555-0142</a></div>
+  </section>
+</main>
+
+<footer class="foot">Franklin, TN &nbsp;&middot;&nbsp; Mon–Sat, 8am–6pm &nbsp;&middot;&nbsp; Licensed &amp; insured</footer>
+
+<div class="track"></div>
+
+<script>
+/* Safety net: if the module below fails (offline CDN, old browser), never strand the page behind the preloader. */
+window.addEventListener('error', function(){ document.getElementById('boot').classList.add('done'); });
+setTimeout(function(){ if(!window.__hs_ready) document.getElementById('boot').classList.add('done'); }, 9000);
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* ============================================================
+   Scroll-scrubbed 3D landing page.
+   Scrolling never moves page content: it drives a fixed WebGL
+   scene (turntable -> exploded view -> reassembly) while text
+   panels cross-fade over it. Everything is procedural: the
+   outdoor kitchen is built from primitives + canvas textures,
+   so there is no model download and the page is one file.
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const boot = $('#boot'), bootBar = $('#bootBar'), bootPct = $('#bootPct'), meter = $('#meter');
+const canvas = $('#gl'), tagsRoot = $('#tags');
+const panels = [].slice.call(document.querySelectorAll('[data-panel]'));
+
+/* --- cue table: [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd] in 0..1 page progress.
+   Gaps between panels are deliberate dead zones (3D only), so two panels are never readable at once. */
+const CUES = [
+  [0.00, 0.00, 0.12, 0.20],
+  [0.34, 0.42, 0.52, 0.60],
+  [0.68, 0.76, 0.86, 0.92],
+  [0.945, 1.00, 1.20, 1.30]
+];
+const DRIFT = 22; // px of counter-scroll travel per panel
+
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = t => t * t * (3 - 2 * t);
+const ramp = (p, a, b) => (b <= a) ? (p >= b ? 1 : 0) : smooth(clamp((p - a) / (b - a), 0, 1));
+const wrapPi = a => Math.atan2(Math.sin(a), Math.cos(a));
+
+let progress = 0;   // raw scroll 0..1
+let eased = 0;      // eased scroll driving the 3D (same trick as easing video.currentTime: kills the jitter)
+let ready = false;
+
+function setProgress(f){ bootBar.style.transform = 'scaleX(' + f + ')'; bootPct.textContent = 'LOADING ' + Math.round(f * 100) + '%'; }
+function readScroll(){
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  progress = max > 0 ? clamp(window.pageYOffset / max, 0, 1) : 0;
+}
+function paint(){
+  meter.style.transform = 'scaleX(' + progress + ')';
+  for (let i = 0; i < panels.length; i++){
+    const c = CUES[i], el = panels[i];
+    const enter = ramp(progress, c[0], c[1]), leave = ramp(progress, c[2], c[3]);
+    const o = enter * (1 - leave);
+    const y = (1 - enter) * DRIFT - leave * DRIFT;
+    el.style.opacity = o;
+    el.style.transform = 'translate3d(0,' + y + 'px,0)';
+    el.style.pointerEvents = o > 0.6 ? 'auto' : 'none';
+  }
+}
+
+/* nav + CTAs jump to a scroll position instead of an anchor (the page has no sections to anchor to) */
+document.querySelectorAll('[data-go]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: max * parseFloat(a.getAttribute('data-go')), behavior: 'smooth' });
+  });
+});
+
+setProgress(0.3);
+
+/* ============================================================ renderer / scene */
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+
+const sun = new THREE.DirectionalLight(0xfff3e4, 2.6);
+sun.position.set(3.5, 6.5, 4.5);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4.5, near: 1, far: 20 });
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02; sun.shadow.radius = 4;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xfaf7f2, 0xb9b3a8, 0.45));
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: 0.16 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+/* ============================================================ textures (canvas, so no downloads) */
+function hash(a, b){ let h = (a * 374761393 + b * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
+
+function brickTexture(){
+  // 1 texture tile = 1 m x 1 m. King-size gray brick, light mortar, tumbled edges.
+  const W = 1024, H = 1024, cols = 4, rows = 13;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  g.fillStyle = '#d9d5ce'; g.fillRect(0, 0, W, H);
+  const bw = W / cols, bh = H / rows, m = W * 0.011;
+  for (let r = 0; r < rows; r++){
+    const off = (r % 2) ? bw / 2 : 0;
+    for (let k = -1; k <= cols; k++){
+      const x = k * bw + off, y = r * bh, id = ((k % cols) + cols) % cols;
+      const l = 30 + hash(r, id) * 26, s = 3 + hash(id, r) * 5;
+      g.fillStyle = 'hsl(24 ' + s.toFixed(1) + '% ' + l.toFixed(1) + '%)';
+      g.beginPath(); g.roundRect(x + m / 2, y + m / 2, bw - m, bh - m, 5); g.fill();
+      // tumbled highlight + dark mottling
+      g.fillStyle = 'rgba(255,255,255,' + (0.05 + hash(r + 9, id) * 0.08) + ')';
+      g.fillRect(x + m / 2, y + m / 2, bw - m, (bh - m) * 0.18);
+      for (let n = 0; n < 5; n++){
+        g.fillStyle = 'rgba(0,0,0,' + (0.05 + hash(n, r * 7 + id) * 0.1) + ')';
+        g.beginPath(); g.ellipse(x + m + hash(n + 3, r + id) * (bw - 2 * m), y + m + hash(n + 5, r * 3 + id) * (bh - 2 * m), 10 + hash(n, id) * 30, 6 + hash(id, n) * 14, 0, 0, Math.PI * 2); g.fill();
+      }
+    }
+  }
+  const img = g.getImageData(0, 0, W, H), d = img.data;
+  for (let i = 0; i < d.length; i += 4){ const n = (Math.random() - 0.5) * 22; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  g.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+function concreteTexture(){
+  const W = 512, H = 512;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  g.fillStyle = '#e1ddd6'; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 2600; i++){
+    g.fillStyle = 'rgba(' + (Math.random() < 0.5 ? '0,0,0' : '255,255,255') + ',' + (Math.random() * 0.08) + ')';
+    g.beginPath(); g.arc(Math.random() * W, Math.random() * H, 1 + Math.random() * 7, 0, Math.PI * 2); g.fill();
+  }
+  for (let i = 0; i < 60; i++){ g.fillStyle = 'rgba(40,36,32,' + (0.08 + Math.random() * 0.12) + ')'; g.beginPath(); g.arc(Math.random() * W, Math.random() * H, 0.6 + Math.random() * 1.6, 0, Math.PI * 2); g.fill(); }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+function brushedTexture(){
+  // fine horizontal streaks: brushed stainless roughness map
+  const W = 512, H = 512;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  g.fillStyle = '#8a8a8a'; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 4000; i++){
+    g.fillStyle = 'rgba(' + (Math.random() < 0.5 ? '0,0,0' : '255,255,255') + ',' + (Math.random() * 0.25) + ')';
+    g.fillRect(Math.random() * W, Math.random() * H, 40 + Math.random() * 200, 1);
+  }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2);
+  return t;
+}
+
+const brickTex = brickTexture(), concreteTex = concreteTexture(), brushedTex = brushedTexture();
+setProgress(0.6);
+
+/* ============================================================ materials */
+const steel      = new THREE.MeshStandardMaterial({ color: 0xd9dad8, metalness: 1, roughness: 0.34, roughnessMap: brushedTex, envMapIntensity: 1.15 });
+const steelDark  = new THREE.MeshStandardMaterial({ color: 0x9a9c9b, metalness: 1, roughness: 0.42, roughnessMap: brushedTex, envMapIntensity: 1.0 });
+const chrome     = new THREE.MeshStandardMaterial({ color: 0xf0f0ee, metalness: 1, roughness: 0.12, envMapIntensity: 1.3 });
+const black      = new THREE.MeshStandardMaterial({ color: 0x1b1a19, metalness: 0.3, roughness: 0.6 });
+const cavityMat  = new THREE.MeshStandardMaterial({ color: 0x2a2724, roughness: 1, side: THREE.BackSide });
+const concrete   = new THREE.MeshStandardMaterial({ map: concreteTex, roughness: 0.9, metalness: 0, envMapIntensity: 0.5 });
+const grateMat   = new THREE.MeshStandardMaterial({ color: 0x3a3a3a, metalness: 0.8, roughness: 0.5 });
+
+function box(w, h, d, mat, x = 0, y = 0, z = 0){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; return m;
+}
+function cyl(r, h, mat, x = 0, y = 0, z = 0, seg = 32){
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), mat);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; return m;
+}
+function brickBox(w, h, d, x, y, z){
+  // one material per face so bricks stay 1 m = 1 tile on every side
+  const mk = (u, v) => { const t = brickTex.clone(); t.repeat.set(u, v); t.needsUpdate = true;
+    return new THREE.MeshStandardMaterial({ map: t, roughness: 0.96, metalness: 0, envMapIntensity: 0.55 }); };
+  const mats = [mk(d, h), mk(d, h), mk(w, d), mk(w, d), mk(w, h), mk(w, h)];
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; return m;
+}
+function hoodGeometry(w, h, d){
+  // side profile (z, y): tall back, chamfered front, extruded along x
+  const pts = [[d / 2, 0], [d / 2, h * 0.34], [d / 2 - d * 0.42, h], [-d / 2, h], [-d / 2, 0]];
+  const s = new THREE.Shape();
+  s.moveTo(-pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length; i++) s.lineTo(-pts[i][0], pts[i][1]);
+  s.closePath();
+  const g = new THREE.ExtrudeGeometry(s, { depth: w, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3 });
+  g.translate(0, 0, -w / 2);
+  g.rotateY(Math.PI / 2);
+  return g;
+}
+
+/* ============================================================ the kitchen, as 7 exploding parts */
+const rig = new THREE.Group();     // turntable
+scene.add(rig);
+const parts = [];                  // { obj, home, dir, anchor, num, name, spec, tilt }
+function part(obj, home, dir, anchor, num, name, spec, tilt = 0){
+  obj.position.copy(home); rig.add(obj);
+  parts.push({ obj, home: home.clone(), dir, anchor, num, name, spec, tilt });
+}
+
+const BASE_H = 0.86, DEPTH = 0.75;
+
+/* 01 brick base: columns + back wall + two open bays */
+{
+  const g = new THREE.Group();
+  g.add(brickBox(0.85, BASE_H, DEPTH, -1.275, BASE_H / 2, 0));     // left column
+  g.add(brickBox(0.30, BASE_H, DEPTH,  0.30, BASE_H / 2, 0));      // pier between grill and keg
+  g.add(brickBox(0.55, BASE_H, DEPTH,  1.425, BASE_H / 2, 0));     // right column
+  g.add(brickBox(3.40, BASE_H, 0.15,   0, BASE_H / 2, -0.30));     // back wall
+  const bay1 = new THREE.Mesh(new THREE.BoxGeometry(1.0, BASE_H, 0.60), cavityMat); bay1.position.set(-0.35, BASE_H / 2, 0.075); bay1.receiveShadow = true; g.add(bay1);
+  const bay2 = new THREE.Mesh(new THREE.BoxGeometry(0.7, BASE_H, 0.60), cavityMat); bay2.position.set(0.80, BASE_H / 2, 0.075); bay2.receiveShadow = true; g.add(bay2);
+  part(g, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -0.30, 0), new THREE.Vector3(-1.35, 0.45, 0.39), '01', 'Brick base', 'Tumbled gray king-size, 10 yr masonry warranty');
+}
+/* 02 concrete counter */
+{
+  const g = new THREE.Group();
+  const slab = box(3.52, 0.06, 0.84, concrete, 0, BASE_H + 0.03, 0);
+  slab.material = concrete.clone(); slab.material.map = concreteTex.clone(); slab.material.map.repeat.set(3.5, 0.9); slab.material.map.needsUpdate = true;
+  g.add(slab);
+  part(g, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.62, 0), new THREE.Vector3(1.55, BASE_H + 0.04, 0.42), '02', 'Concrete counter', '2" poured in place, honed and sealed');
+}
+/* 03 grill body: drop-in, control panel, four knobs, grates */
+{
+  const g = new THREE.Group();
+  g.add(box(0.92, 0.30, 0.62, steel, 0, 0, 0));
+  g.add(box(0.94, 0.02, 0.64, chrome, 0, 0.15, 0));                       // trim ring
+  g.add(box(0.92, 0.17, 0.02, steelDark, 0, 0.065, 0.315));               // control fascia
+  const grate = new THREE.Group();
+  for (let i = 0; i < 12; i++) grate.add(box(0.86, 0.008, 0.012, grateMat, 0, 0.16, -0.24 + i * 0.043));
+  g.add(grate);
+  [-0.30, -0.10, 0.10, 0.30].forEach(x => {
+    const ring = cyl(0.034, 0.016, chrome, x, 0.06, 0.33); ring.rotation.x = Math.PI / 2; g.add(ring);
+    const knob = cyl(0.026, 0.04, black, x, 0.06, 0.35); knob.rotation.x = Math.PI / 2; g.add(knob);
+    g.add(box(0.006, 0.02, 0.006, chrome, x, 0.075, 0.372));               // pointer
+  });
+  part(g, new THREE.Vector3(-0.35, 0.95, 0), new THREE.Vector3(0, 0.36, 1.05), new THREE.Vector3(0.50, 0.03, 0.33), '03', '36" Grill', 'Four 304-stainless burners, 72,000 BTU');
+}
+/* 04 hood */
+{
+  const g = new THREE.Group();
+  const hood = new THREE.Mesh(hoodGeometry(0.92, 0.36, 0.62), steel); hood.castShadow = true; hood.receiveShadow = true; g.add(hood);
+  const bar = cyl(0.013, 0.86, chrome, 0, 0.11, 0.36); bar.rotation.z = Math.PI / 2; g.add(bar);
+  g.add(box(0.03, 0.03, 0.06, chrome, -0.38, 0.11, 0.335));
+  g.add(box(0.03, 0.03, 0.06, chrome,  0.38, 0.11, 0.335));
+  g.add(box(0.30, 0.012, 0.002, black, 0, 0.04, 0.312));                   // badge
+  part(g, new THREE.Vector3(-0.35, 1.10, 0), new THREE.Vector3(0, 0.85, -0.30), new THREE.Vector3(0, 0.30, 0.10), '04', 'Double-wall hood', 'Spring-assist, stays cool to the touch', -0.32);
+}
+/* 05 access doors */
+{
+  const g = new THREE.Group();
+  g.add(box(0.98, 0.64, 0.02, steel, 0, 0, 0.005));
+  g.add(box(0.44, 0.55, 0.026, steel, -0.235, 0, 0.03));
+  g.add(box(0.44, 0.55, 0.026, steel,  0.235, 0, 0.03));
+  g.add(cyl(0.008, 0.16, chrome, -0.055, 0, 0.065));
+  g.add(cyl(0.008, 0.16, chrome,  0.055, 0, 0.065));
+  part(g, new THREE.Vector3(-0.35, 0.40, DEPTH / 2), new THREE.Vector3(0, -0.12, 1.25), new THREE.Vector3(-0.50, 0.10, 0.05), '05', 'Access doors', 'Double, 304 stainless, soft-close');
+}
+/* 06 kegerator */
+{
+  const g = new THREE.Group();
+  g.add(box(0.66, 0.82, 0.62, steelDark, 0, 0.41, 0.06));
+  g.add(box(0.62, 0.78, 0.03, steel, 0, 0.41, 0.385));
+  g.add(box(0.52, 0.025, 0.025, chrome, 0, 0.75, 0.41));                   // grip
+  g.add(box(0.52, 0.05, 0.006, black, 0, 0.08, 0.40));                     // vent
+  part(g, new THREE.Vector3(0.80, 0, 0), new THREE.Vector3(1.05, -0.02, 0.75), new THREE.Vector3(0.36, 0.55, 0.40), '06', 'Kegerator', 'Outdoor rated, holds a half barrel');
+}
+/* 07 tap tower */
+{
+  const g = new THREE.Group();
+  g.add(cyl(0.07, 0.02, chrome, 0, 0.01, 0));
+  g.add(cyl(0.04, 0.42, chrome, 0, 0.22, 0));
+  g.add(cyl(0.046, 0.02, chrome, 0, 0.44, 0));
+  [-0.05, 0.05].forEach(x => {
+    g.add(box(0.022, 0.022, 0.09, chrome, x, 0.36, 0.06));
+    const f = cyl(0.012, 0.05, chrome, x, 0.33, 0.10); g.add(f);
+    const h = cyl(0.011, 0.12, black, x, 0.44, 0.075); g.add(h);
+    const s = new THREE.Mesh(new THREE.SphereGeometry(0.017, 20, 14), black); s.position.set(x, 0.505, 0.075); s.castShadow = true; g.add(s);
+  });
+  // small rail around the drip area, like the photo
+  const rail = new THREE.Group();
+  const rb = cyl(0.006, 0.44, chrome, 0, 0.06, 0.20); rb.rotation.z = Math.PI / 2; rail.add(rb);
+  const rf = cyl(0.006, 0.44, chrome, 0, 0.06, -0.20); rf.rotation.z = Math.PI / 2; rail.add(rf);
+  [-0.22, 0.22].forEach(x => { const rs = cyl(0.006, 0.40, chrome, x, 0.06, 0); rs.rotation.x = Math.PI / 2; rail.add(rs);
+    [-0.20, 0.20].forEach(z => rail.add(cyl(0.006, 0.06, chrome, x, 0.03, z))); });
+  g.add(rail);
+  part(g, new THREE.Vector3(0.80, BASE_H + 0.06, 0.0), new THREE.Vector3(0.85, 0.72, 0.35), new THREE.Vector3(0.05, 0.36, 0.05), '07', 'Tap tower', 'Dual faucet, glycol-chilled lines');
+}
+
+/* ============================================================ labels: DOM nodes projected from 3D anchors */
+const tagEls = parts.map(p => {
+  const el = document.createElement('div');
+  el.className = 'tag';
+  el.innerHTML = '<span class="dot"><i>' + p.num + '</i></span><span class="line"></span><span class="txt"><b><span>' + p.num + '</span>' + p.name + '</b><em>' + p.spec + '</em></span>';
+  tagsRoot.appendChild(el);
+  return el;
+});
+const _v = new THREE.Vector3();
+function paintTags(vis){
+  const w = window.innerWidth, h = window.innerHeight;
+  for (let i = 0; i < parts.length; i++){
+    const el = tagEls[i];
+    if (vis < 0.01){ el.style.opacity = 0; continue; }
+    _v.copy(parts[i].anchor); parts[i].obj.localToWorld(_v); _v.project(camera);
+    const x = (_v.x * 0.5 + 0.5) * w, y = (-_v.y * 0.5 + 0.5) * h;
+    const flip = x > w * 0.5;
+    el.classList.toggle('flip', flip);
+    el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) translate(' + (flip ? '-100%' : '0') + ',-50%)';
+    el.style.opacity = _v.z < 1 ? vis : 0;
+  }
+}
+
+/* ============================================================ camera / turntable state */
+let yaw = 0.45, yawVel = 0, dragging = false, lastX = 0, dragType = '';
+let mx = 0, my = 0; // pointer parallax
+window.addEventListener('pointermove', e => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 2; my = (e.clientY / window.innerHeight - 0.5) * 2;
+  if (dragging){ yawVel = (e.clientX - lastX) * 0.004; yaw += yawVel; lastX = e.clientX; }
+}, { passive: true });
+window.addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'mouse' || e.target.closest('a,button')) return; // touch keeps scrolling
+  dragging = true; lastX = e.clientX; dragType = e.pointerType;
+});
+window.addEventListener('pointerup', () => { dragging = false; });
+
+function resize(){
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.fov = camera.aspect < 0.8 ? 40 : 30;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', () => { resize(); readScroll(); });
+resize();
+
+/* ============================================================ frame loop, never cancelled */
+const clock = new THREE.Clock();
+let lastEased = 0;
+function frame(){
+  const dt = Math.min(clock.getDelta(), 0.1);
+  eased += (progress - eased) * (1 - Math.exp(-dt * 5.5));           // easing factor: turns a jumpy scrub into a smooth one
+  const dScroll = eased - lastEased; lastEased = eased;
+
+  // explode amount: 0 assembled -> 1 fully apart -> 0 reassembled
+  const e = ramp(eased, 0.16, 0.42) * (1 - ramp(eased, 0.60, 0.86));
+  const es = smooth(e);
+
+  // turntable: free spin (time + scroll + drag) while assembled, eases into a fixed reading angle while exploded
+  if (!dragging){ yawVel *= Math.exp(-dt * 5); yaw += yawVel; }
+  yaw += (0.20 * dt + dScroll * 4.6) * (1 - es);
+  yaw += wrapPi(0.42 - yaw) * (1 - Math.exp(-dt * 3.6)) * es;
+  rig.rotation.y = yaw;
+  rig.position.y = Math.sin(clock.elapsedTime * 0.7) * 0.006 * (1 - es);
+
+  // parts fly out along their own vector
+  for (const p of parts){
+    p.obj.position.copy(p.home).addScaledVector(p.dir, es);
+    if (p.tilt) p.obj.rotation.x = p.tilt * es;
+  }
+
+  // camera fit: wide model on wide screens is limited by height, on phones by width
+  const narrow = camera.aspect < 0.8;
+  const vF = THREE.MathUtils.degToRad(camera.fov), hF = 2 * Math.atan(Math.tan(vF / 2) * camera.aspect);
+  const halfW = 2.05 + es * 0.75, halfH = 1.12 + es * (narrow ? 0.85 : 1.5);
+  const dist = Math.max(halfW / Math.tan(hF / 2), halfH / Math.tan(vF / 2)) * (narrow ? 1.0 : 1.06);
+  const pitch = 0.30 + es * 0.12 + my * 0.03;
+  const ty = 0.60 - es * (narrow ? 0.34 : 0.27);
+  camera.position.set(mx * 0.3, ty + dist * Math.sin(pitch), dist * Math.cos(pitch));
+  camera.lookAt(0, ty, 0);
+
+  renderer.render(scene, camera);
+  paint();
+  paintTags(ramp(e, 0.55, 0.95));
+  requestAnimationFrame(frame);
+}
+
+/* ============================================================ boot */
+window.addEventListener('scroll', readScroll, { passive: true });
+readScroll(); paint();
+eased = progress; lastEased = eased;
+renderer.compile(scene, camera);
+setProgress(0.85);
+requestAnimationFrame(() => {
+  frame();
+  setProgress(1);
+  ready = true; window.__hs_ready = true;
+  setTimeout(() => boot.classList.add('done'), 250);
+});
+</script>
+</body>
+</html>
