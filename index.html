@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hearth &amp; Slab — Cozinhas Externas</title>
-<meta name="description" content="Cozinhas externas em tijolo, concreto e inox, construídas no seu quintal em três dias.">
+<title>Hearth &amp; Slab — Cozinhas Externas na Flórida</title>
+<meta name="description" content="Cozinhas externas em tijolo, concreto e inox 316, projetadas em 3D e construídas em três dias na Flórida. Garantia vitalícia e financiamento 0%.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -16,10 +16,19 @@
   --fg-soft:rgba(13,12,11,.64);
   --fg-faint:rgba(13,12,11,.42);
   --shade:#f2f0ec;
-  --shade-2:#ebe8e2;
+  --shade-2:#e9e5de;
   --card:#f7f5f1;
+  --ink:#0d0c0b;
+  --ink-2:#161412;
+  --paper-on-ink:#f2f0ec;
+  --paper-soft:rgba(242,240,236,.62);
+  --paper-faint:rgba(242,240,236,.38);
   --rule:rgba(13,12,11,.16);
   --rule-soft:rgba(13,12,11,.08);
+  --rule-ink:rgba(242,240,236,.16);
+  --rule-ink-soft:rgba(242,240,236,.08);
+  --ember:#e8632c;
+  --ember-2:#ffb15c;
   --ease:cubic-bezier(.22,.61,.36,1);
   --pill-bg:#0a0908;
   --pill-fg:#ffffff;
@@ -32,7 +41,9 @@ body{
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden;
 }
 a{color:inherit}
-img,canvas{display:block}
+img,canvas,svg{display:block}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--ember);color:#fff}
 
 /* ============ sticky 3D hero ============ */
 .hero{position:relative;height:640vh;min-height:3600px;z-index:1}
@@ -43,7 +54,8 @@ img,canvas{display:block}
   position:absolute;inset:0;pointer-events:none;
   background:
     linear-gradient(to bottom, rgba(242,240,236,.62) 0%, rgba(242,240,236,.06) 22%, rgba(242,240,236,.06) 78%, rgba(242,240,236,.66) 100%),
-    radial-gradient(100% 80% at 50% 48%, rgba(242,240,236,0) 0%, rgba(242,240,236,.22) 100%);
+    radial-gradient(100% 80% at 50% 48%, rgba(242,240,236,0) 0%, rgba(242,240,236,.22) 100%),
+    radial-gradient(60% 40% at 50% 100%, rgba(232,99,44,.10) 0%, rgba(232,99,44,0) 100%);
 }
 .grain{
   position:absolute;inset:-50%;opacity:.13;mix-blend-mode:multiply;pointer-events:none;
@@ -51,17 +63,17 @@ img,canvas{display:block}
 }
 .tags{position:absolute;inset:0;z-index:15;pointer-events:none;overflow:hidden}
 .tag{position:absolute;left:0;top:0;opacity:0;will-change:transform,opacity;display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:12.5px;letter-spacing:.02em;color:var(--fg);transform:translate3d(-9999px,-9999px,0)}
-.tag .dot{width:7px;height:7px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 0 0 3px rgba(242,240,236,.9);display:flex;align-items:center;justify-content:center}
+.tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);flex:none;box-shadow:0 0 0 3px rgba(242,240,236,.9);display:flex;align-items:center;justify-content:center}
 .tag .dot i{display:none;font-style:normal;font-size:10px;font-weight:500;color:#fff;letter-spacing:0}
 .tag .line{width:34px;height:1px;background:var(--fg);opacity:.55;flex:none}
 .tag .txt{display:flex;flex-direction:column;gap:2px;line-height:1.2;background:rgba(242,240,236,.72);padding:6px 9px;border-radius:4px;backdrop-filter:blur(4px)}
 .tag b{font-weight:500;font-size:12.5px;letter-spacing:-.005em}
-.tag b span{color:var(--fg-faint);font-weight:400;margin-right:8px}
+.tag b span{color:var(--ember);font-weight:500;margin-right:8px}
 .tag em{font-style:normal;color:var(--fg-soft);font-size:11px;letter-spacing:.03em}
 .tag.flip{flex-direction:row-reverse}
 .tag.flip .txt{text-align:right}
 .legend{display:none;list-style:none;margin-top:14px;gap:6px 14px;flex-wrap:wrap;justify-content:center;font-size:11.5px;letter-spacing:.02em;color:var(--fg-soft)}
-.legend b{font-weight:400;color:var(--fg-faint);margin-right:4px}
+.legend b{font-weight:500;color:var(--ember);margin-right:4px}
 
 .panels{position:absolute;inset:0;z-index:20;pointer-events:none}
 .panel{
@@ -73,11 +85,16 @@ img,canvas{display:block}
 .panel--low h1{font-size:clamp(26px, 3.6vw, 54px);max-width:18ch}
 .panel--low .sub{margin-top:clamp(12px,1.4vw,18px);max-width:40ch}
 .eyebrow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;letter-spacing:.045em;text-transform:uppercase;color:var(--fg-soft);margin-bottom:clamp(16px,2vw,22px);max-width:min(46ch,100%);text-align:center}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ember)}
 h1{font-weight:400;font-size:clamp(34px, 7.1vw, 104px);line-height:.98;letter-spacing:-.036em;max-width:15ch;text-wrap:balance}
 .sub{margin-top:clamp(18px,2.2vw,28px);font-size:clamp(15px,1.28vw,19px);line-height:1.5;letter-spacing:-.008em;color:var(--fg-soft);max-width:min(46ch,100%);text-wrap:pretty}
 .cta{margin-top:clamp(28px,3.4vw,44px);pointer-events:auto;width:100%;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .cta .pill{height:48px;padding:0 27px;font-size:15px;max-width:min(100%,320px)}
 .pill--ghost{background:transparent!important;color:var(--fg)!important;-webkit-text-fill-color:var(--fg)!important;border-color:var(--rule)!important}
+.pill--ember{background:var(--ember)!important;border-color:transparent!important}
+.trust{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-size:12.5px;letter-spacing:.02em;color:var(--fg-soft)}
+.trust .st{color:var(--ember);letter-spacing:1px}
+.trust i{width:3px;height:3px;border-radius:50%;background:var(--fg-faint);font-style:normal}
 .hint{margin-top:22px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);display:flex;align-items:center;gap:8px}
 .hint i{display:block;width:1px;height:26px;background:var(--fg-faint);animation:drop 1.8s var(--ease) infinite;transform-origin:0 0}
 @keyframes drop{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:0 100%}}
@@ -96,11 +113,17 @@ h1{font-weight:400;font-size:clamp(34px, 7.1vw, 104px);line-height:.98;letter-sp
   position:fixed;left:0;right:0;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:max(14px, calc(env(safe-area-inset-top, 0px) + 12px)) clamp(16px, 3.4vw, 44px) 14px;
   background:linear-gradient(to bottom, rgba(242,240,236,.94) 0%, rgba(242,240,236,.78) 72%, rgba(242,240,236,0) 100%);
-  transition:background .4s var(--ease);
+  transition:background .4s var(--ease), color .4s var(--ease);
 }
-.chrome.solid{background:rgba(242,240,236,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule-soft)}
-.mark{display:flex;align-items:center;gap:9px;font-size:15px;letter-spacing:-.012em;color:var(--fg);min-width:0;flex-shrink:1;text-decoration:none}
-.mark-star{opacity:.85}
+.chrome.solid{background:rgba(242,240,236,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule-soft)}
+.chrome.dark{background:rgba(13,12,11,.82);color:var(--paper-on-ink);border-bottom-color:var(--rule-ink-soft)}
+.chrome.dark .nav a:not(.pill):not(.lang){color:var(--paper-on-ink)}
+.chrome.dark .lang{border-color:var(--rule-ink)}
+.chrome.dark .lang span{color:var(--paper-faint)}
+.chrome.dark .lang span.on{background:var(--paper-on-ink);color:var(--ink)}
+.chrome.dark .nav .pill{background:var(--paper-on-ink);color:var(--ink);-webkit-text-fill-color:var(--ink)}
+.mark{display:flex;align-items:center;gap:9px;font-size:15px;letter-spacing:-.012em;color:inherit;min-width:0;flex-shrink:1;text-decoration:none}
+.mark-star{color:var(--ember)}
 .nav{display:flex;align-items:center;gap:clamp(14px, 2.4vw, 32px);flex-shrink:0}
 .nav a:not(.pill):not(.lang){color:var(--fg);text-decoration:none;font-size:14.5px;letter-spacing:-.008em;opacity:.88;transition:opacity .3s var(--ease);cursor:pointer}
 .nav a:not(.pill):hover{opacity:1}
@@ -116,33 +139,66 @@ h1{font-weight:400;font-size:clamp(34px, 7.1vw, 104px);line-height:.98;letter-sp
 }
 .nav .pill{color:#fff;-webkit-text-fill-color:#fff}
 .pill:hover,.pill:focus-visible{transform:translateY(-2px);background:#000;color:#fff;-webkit-text-fill-color:#fff}
-.pill:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
-.meter{position:fixed;top:0;left:0;z-index:50;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--fg);opacity:.55}
+.pill--ember:hover{background:#d4541f!important}
+.pill:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.meter{position:fixed;top:0;left:0;z-index:50;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--ember);opacity:.9}
+
+/* mobile sticky action bar */
+.mbar{position:fixed;left:12px;right:12px;bottom:max(12px, env(safe-area-inset-bottom, 0px));z-index:45;display:none;gap:8px;transform:translateY(120%);transition:transform .5s var(--ease)}
+.mbar.on{transform:none}
+.mbar a{flex:1;height:46px;font-size:14px}
+.mbar .pill--ghost{background:rgba(242,240,236,.94)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -12px rgba(0,0,0,.5)}
+.mbar .pill--ember{box-shadow:0 10px 30px -12px rgba(232,99,44,.7)}
 
 /* ============ page sections ============ */
 .section{scroll-margin-top:64px;position:relative;z-index:2;background:var(--shade);padding:clamp(72px,9vw,140px) clamp(20px,5vw,60px)}
 .section--alt{background:var(--shade-2)}
-.section--dark{background:var(--fg);color:var(--shade)}
-.section--dark .eyebrow,.section--dark .lead,.section--dark .q-who{color:rgba(242,240,236,.6)}
+.section--ink{background:var(--ink);color:var(--paper-on-ink)}
+.section--ink .eyebrow,.section--ink .lead{color:var(--paper-soft)}
+.section--ink .lead{color:var(--paper-soft)}
+.section--glow::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 80% 10%, rgba(232,99,44,.22) 0%, rgba(232,99,44,0) 70%),radial-gradient(40% 40% at 10% 90%, rgba(255,177,92,.10) 0%, rgba(255,177,92,0) 70%)}
+.section--ink::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>")}
+.section > .wrap{position:relative;z-index:1}
+.bridge{position:relative;z-index:2;height:clamp(140px,20vw,280px);background:linear-gradient(to bottom, var(--shade) 0%, #b9b3a8 45%, var(--ink) 100%)}
+.bridge--up{background:linear-gradient(to bottom, var(--ink) 0%, #b9b3a8 55%, var(--shade) 100%)}
+.bridge--alt{background:linear-gradient(to bottom, var(--ink) 0%, #b9b3a8 55%, var(--shade-2) 100%)}
 .wrap{max-width:1240px;margin:0 auto}
 .sec-head{display:grid;grid-template-columns:1.2fr .8fr;gap:24px 48px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
 .sec-head .eyebrow{justify-content:flex-start;text-align:left;margin-bottom:14px}
 h2{font-weight:400;font-size:clamp(32px,4.8vw,68px);line-height:.98;letter-spacing:-.034em;text-wrap:balance}
 .lead{font-size:clamp(15px,1.2vw,18px);line-height:1.5;color:var(--fg-soft);max-width:46ch;text-wrap:pretty}
+.em{color:var(--ember)}
 
 /* reveal */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 .rv.in{opacity:1;transform:none}
 
+/* marquee */
+.marq{position:relative;z-index:2;background:var(--shade);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);overflow:hidden;padding:18px 0;white-space:nowrap}
+.marq .lbl{position:absolute;left:clamp(20px,5vw,60px);top:50%;transform:translateY(-50%);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);background:var(--shade);padding-right:18px;z-index:1}
+.marq .row{display:inline-flex;gap:56px;padding-left:56px;animation:marq 38s linear infinite}
+.marq .row span{font-size:clamp(18px,1.8vw,24px);letter-spacing:-.02em;color:var(--fg-faint);display:inline-flex;align-items:center;gap:56px}
+.marq .row span::after{content:"✦";font-size:10px;color:var(--ember)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* numbers band */
+.band{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule-ink);border-bottom:1px solid var(--rule-ink)}
+.band div{padding:26px 24px 26px 0;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--rule-ink-soft)}
+.band div + div{padding-left:24px}
+.band div:last-child{border-right:0}
+.band b{font-weight:400;font-size:clamp(34px,4vw,56px);line-height:1;letter-spacing:-.045em}
+.band b em{font-style:normal;color:var(--ember)}
+.band span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-faint)}
+
 /* models grid */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
 .card{position:relative;border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:var(--card);display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s}
 .card:hover{transform:translateY(-4px);box-shadow:0 30px 60px -34px rgba(13,12,11,.45);border-color:rgba(13,12,11,.3)}
-.card .view{position:relative;aspect-ratio:7/5;background:radial-gradient(120% 90% at 50% 100%, #e6e2da 0%, var(--card) 70%);overflow:hidden;cursor:grab}
+.card .view{position:relative;aspect-ratio:7/5;background:radial-gradient(120% 90% at 50% 100%, #e6e2da 0%, var(--card) 70%);overflow:hidden;cursor:grab;touch-action:pan-y}
 .card .view canvas{width:100%;height:100%;position:absolute;inset:0}
 .card .view .rot{position:absolute;right:12px;bottom:10px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);display:flex;align-items:center;gap:6px;opacity:.9}
 .card .view .rot::before{content:"";width:12px;height:12px;border:1.5px solid currentColor;border-radius:50%;border-right-color:transparent;transform:rotate(-30deg)}
-.badge{position:absolute;top:12px;left:12px;z-index:2;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--fg);color:#fff}
+.badge{position:absolute;top:12px;left:12px;z-index:2;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--ember);color:#fff}
 .badge.soft{background:rgba(242,240,236,.9);color:var(--fg);border:1px solid var(--rule)}
 .card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
@@ -154,7 +210,42 @@ h2{font-weight:400;font-size:clamp(32px,4.8vw,68px);line-height:.98;letter-spaci
 .card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid var(--rule-soft)}
 .price{font-size:17px;letter-spacing:-.02em}
 .price span{font-size:10.5px;color:var(--fg-faint);display:block;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
-.card .go{font-size:13px;text-decoration:none;color:var(--fg);border-bottom:1px solid var(--fg);padding-bottom:1px}
+.card .go{font-size:13px;text-decoration:none;color:var(--fg);border-bottom:1px solid var(--ember);padding-bottom:1px}
+
+/* configurator */
+.cfg{display:grid;grid-template-columns:380px 1fr;gap:clamp(24px,3vw,48px);align-items:start}
+.cfg-opts{display:flex;flex-direction:column;gap:26px}
+.opt h4{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-faint);margin-bottom:10px;display:flex;justify-content:space-between}
+.opt h4 small{letter-spacing:.02em;text-transform:none;color:var(--ember)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 14px;border:1px solid var(--rule-ink);border-radius:999px;font-size:13.5px;letter-spacing:-.005em;color:var(--paper-on-ink);transition:background .3s,border-color .3s,color .3s;display:inline-flex;align-items:center;gap:8px}
+.chip small{font-size:11px;color:var(--paper-faint)}
+.chip:hover{border-color:rgba(242,240,236,.5)}
+.chip.on{background:var(--paper-on-ink);color:var(--ink);border-color:var(--paper-on-ink)}
+.chip.on small{color:var(--fg-soft)}
+.cfg-view{position:relative;border:1px solid var(--rule-ink);border-radius:20px;overflow:hidden;background:radial-gradient(80% 70% at 50% 100%, #2a2521 0%, #100f0e 70%);aspect-ratio:16/10;cursor:grab;touch-action:pan-y}
+.cfg-view canvas{position:absolute;inset:0;width:100%;height:100%}
+.cfg-view .hud{position:absolute;left:16px;top:14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-faint);display:flex;gap:14px}
+.cfg-view .hud b{font-weight:400;color:var(--paper-on-ink)}
+.cfg-sum{margin-top:18px;display:grid;grid-template-columns:1fr 1fr auto;gap:16px 28px;align-items:end;padding-top:18px;border-top:1px solid var(--rule-ink)}
+.cfg-sum .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-faint);margin-bottom:6px}
+.cfg-sum .v{font-size:clamp(22px,2.4vw,34px);letter-spacing:-.035em;line-height:1}
+.cfg-sum .v small{font-size:13px;letter-spacing:0;color:var(--paper-faint);margin-left:8px}
+.cfg-sum .fin{font-size:12.5px;color:var(--paper-soft);margin-top:6px}
+.cfg-sum .fin b{font-weight:500;color:var(--ember-2)}
+.section--ink .pill{background:var(--paper-on-ink);color:var(--ink);-webkit-text-fill-color:var(--ink);border-color:transparent}
+.section--ink .pill:hover{background:#fff;color:var(--ink);-webkit-text-fill-color:var(--ink)}
+.section--ink .pill--ember{background:var(--ember)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+
+/* florida tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,22px)}
+.tile{border:1px solid var(--rule-ink);border-radius:16px;padding:26px 24px 24px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg, rgba(242,240,236,.05), rgba(242,240,236,.01));min-height:260px}
+.tile .ic{width:40px;height:40px;border-radius:12px;background:rgba(232,99,44,.16);display:flex;align-items:center;justify-content:center;color:var(--ember-2)}
+.tile .ic svg{width:20px;height:20px}
+.tile h3{font-weight:500;font-size:18px;letter-spacing:-.02em}
+.tile p{font-size:14px;line-height:1.55;color:var(--paper-soft)}
+.tile .big{margin-top:auto;font-size:clamp(28px,2.8vw,40px);letter-spacing:-.04em;line-height:1}
+.tile .big small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-faint);margin-top:6px}
 
 /* process */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule)}
@@ -162,6 +253,7 @@ h2{font-weight:400;font-size:clamp(32px,4.8vw,68px);line-height:.98;letter-spaci
 .step:last-child{border-right:0}
 .step + .step{padding-left:24px}
 .step .n{font-size:clamp(44px,5vw,72px);line-height:1;letter-spacing:-.05em;color:var(--fg)}
+.step .n::after{content:"";display:block;width:28px;height:2px;background:var(--ember);margin-top:14px}
 .step h3{font-weight:500;font-size:18px;letter-spacing:-.02em}
 .step .d{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-faint);margin-top:4px}
 .step p{font-size:14.5px;line-height:1.55;color:var(--fg-soft)}
@@ -186,12 +278,60 @@ h2{font-weight:400;font-size:clamp(32px,4.8vw,68px);line-height:.98;letter-spaci
 .mat p{font-size:14.5px;line-height:1.55;color:var(--fg-soft)}
 .mat .spec{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-faint)}
 
+/* compare table */
+.cmp{width:100%;border-collapse:collapse;font-size:14.5px}
+.cmp th,.cmp td{padding:16px 14px;border-bottom:1px solid var(--rule-soft);text-align:left;vertical-align:middle}
+.cmp th{font-weight:400;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-faint)}
+.cmp th:not(:first-child),.cmp td:not(:first-child){text-align:center;width:22%}
+.cmp th.us{color:var(--fg)}
+.cmp td.us{background:rgba(232,99,44,.06)}
+.cmp .yes{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--ember);color:#fff;align-items:center;justify-content:center;font-size:12px}
+.cmp .no{display:inline-block;width:14px;height:1px;background:var(--fg-faint);vertical-align:middle}
+.cmp .part{font-size:12px;color:var(--fg-faint)}
+
 /* testimonials */
 .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
-.q{border:1px solid rgba(242,240,236,.18);border-radius:16px;padding:26px 26px 24px;display:flex;flex-direction:column;gap:18px;background:rgba(242,240,236,.04)}
+.q{border:1px solid var(--rule-ink);border-radius:16px;padding:26px 26px 24px;display:flex;flex-direction:column;gap:18px;background:rgba(242,240,236,.04)}
 .q p{font-size:clamp(16px,1.3vw,19px);line-height:1.45;letter-spacing:-.012em;text-wrap:pretty}
-.q .q-who{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;margin-top:auto}
-.q .stars{letter-spacing:2px;font-size:12px;color:rgba(242,240,236,.8)}
+.q .q-who{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;margin-top:auto;color:var(--paper-soft)}
+.q .stars{letter-spacing:2px;font-size:12px;color:var(--ember-2)}
+
+/* warranty / financing */
+.wf{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px)}
+.wf .box{border:1px solid var(--rule);border-radius:20px;padding:clamp(24px,3vw,40px);background:var(--card);display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+.wf .box.ink{background:var(--ink);color:var(--paper-on-ink);border-color:transparent}
+.wf .box.ink::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 100% 0%, rgba(232,99,44,.35), rgba(232,99,44,0) 70%)}
+.wf .box > *{position:relative}
+.wf .big{font-size:clamp(40px,5vw,76px);letter-spacing:-.05em;line-height:.95}
+.wf .big small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-top:10px;opacity:.6}
+.wf h3{font-weight:500;font-size:20px;letter-spacing:-.02em}
+.wf p{font-size:14.5px;line-height:1.55;opacity:.75}
+.wf ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px;margin-top:4px}
+.wf li{display:flex;gap:10px;align-items:flex-start}
+.wf li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ember);flex:none;margin-top:7px}
+
+/* service map */
+.area{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+.map{position:relative}
+.map svg{width:100%;height:auto;overflow:visible}
+.map .fl{fill:var(--shade-2);stroke:var(--rule);stroke-width:.5}
+.map .pt{fill:var(--ember)}
+.map .ring{fill:none;stroke:var(--ember);stroke-width:.4;opacity:.5;transform-origin:center;transform-box:fill-box;animation:ring 2.8s var(--ease) infinite}
+.map .hq{fill:var(--ink)}
+.map text{font-size:2.6px;fill:var(--fg-soft);letter-spacing:.02em}
+@keyframes ring{0%{transform:scale(.4);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.cities{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-top:22px}
+.cities li{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;padding:10px 0;border-bottom:1px solid var(--rule-soft)}
+.cities li span{color:var(--fg-faint);font-size:12.5px}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,4vw,64px)}
+.faq details{border-bottom:1px solid var(--rule-soft)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:16.5px;letter-spacing:-.015em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;color:var(--ember);flex:none;transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 20px;font-size:14.5px;line-height:1.55;color:var(--fg-soft);max-width:52ch}
 
 /* quote form */
 .quote{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
@@ -206,28 +346,34 @@ label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(-
 input,select,textarea{font:inherit;font-size:15px;color:var(--fg);background:transparent;border:0;border-bottom:1px solid var(--rule);padding:10px 0;border-radius:0;outline:none;transition:border-color .3s;-webkit-appearance:none;appearance:none}
 select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%230d0c0b' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 2px center;padding-right:20px}
 textarea{resize:vertical;min-height:96px}
-input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
+input:focus,select:focus,textarea:focus{border-bottom-color:var(--ember)}
 .form-foot{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:6px}
 .form-foot small{font-size:12px;color:var(--fg-faint);line-height:1.4}
 
 /* footer */
-.foot{background:var(--shade-2);border-top:1px solid var(--rule);padding:44px clamp(20px,5vw,60px) max(28px, calc(env(safe-area-inset-bottom, 0px) + 20px));position:relative;z-index:2}
-.foot .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px}
+.foot{background:var(--ink);color:var(--paper-on-ink);padding:56px clamp(20px,5vw,60px) max(28px, calc(env(safe-area-inset-bottom, 0px) + 20px));position:relative;z-index:2}
+.foot .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
 .foot h4{font-weight:400;font-size:15px;letter-spacing:-.012em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.foot p,.foot li{font-size:13.5px;line-height:1.6;color:var(--fg-soft)}
+.foot p,.foot li{font-size:13.5px;line-height:1.6;color:var(--paper-soft)}
 .foot ul{list-style:none}
 .foot a{text-decoration:none}
 .foot a:hover{text-decoration:underline}
-.foot .copy{grid-column:1 / -1;margin-top:26px;padding-top:18px;border-top:1px solid var(--rule-soft);font-size:12px;color:var(--fg-faint);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot .copy{grid-column:1 / -1;margin-top:30px;padding-top:18px;border-top:1px solid var(--rule-ink-soft);font-size:12px;color:var(--paper-faint);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot .big{grid-column:1 / -1;font-size:clamp(40px,9vw,140px);line-height:.9;letter-spacing:-.05em;margin:0 0 30px;color:var(--paper-on-ink);opacity:.95}
+.foot .big em{font-style:normal;color:var(--ember)}
 
 /* preloader */
 .boot{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--shade);transition:opacity .7s var(--ease), visibility .7s}
 .boot.done{opacity:0;visibility:hidden}
 .boot p{font-size:12.5px;letter-spacing:.05em;color:var(--fg-faint)}
 .bar{width:150px;height:1px;background:var(--rule);overflow:hidden}
-.bar i{display:block;height:100%;width:100%;background:var(--fg);transform:scaleX(0);transform-origin:0 50%}
+.bar i{display:block;height:100%;width:100%;background:var(--ember);transform:scaleX(0);transform-origin:0 50%}
 
 /* ============ breakpoints ============ */
+@media (max-width:1100px){
+  .cfg{grid-template-columns:1fr}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+}
 @media (max-width:1000px){
   .grid{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(2,1fr)}
@@ -237,6 +383,13 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
   .step:nth-child(even){padding-left:24px}
   .quotes{grid-template-columns:1fr}
   .quote{grid-template-columns:1fr;gap:36px}
+  .area{grid-template-columns:1fr}
+  .faq{grid-template-columns:1fr}
+  .band{grid-template-columns:repeat(2,1fr)}
+  .band div{border-right:0;border-bottom:1px solid var(--rule-ink-soft)}
+  .band div + div{padding-left:0}
+  .band div:nth-child(odd){border-right:1px solid var(--rule-ink-soft);padding-right:20px}
+  .band div:nth-child(even){padding-left:20px}
   .foot .wrap{grid-template-columns:1fr 1fr}
 }
 @media (max-width:900px){
@@ -246,6 +399,7 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
       radial-gradient(100% 80% at 50% 48%, rgba(242,240,236,0) 0%, rgba(242,240,236,.28) 100%);
   }
   .sec-head{grid-template-columns:1fr;gap:16px}
+  .wf{grid-template-columns:1fr}
 }
 @media (max-width:720px){
   .nav a:not(.pill):not(.lang){display:none}
@@ -258,18 +412,26 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
   .panel{padding:max(92px, calc(env(safe-area-inset-top, 0px) + 76px)) 18px max(88px, calc(env(safe-area-inset-bottom, 0px) + 72px))}
   .hero-foot{font-size:11px}
   .tag .line,.tag .txt{display:none}
-  .tag .dot{width:22px;height:22px}
+  .tag .dot{width:22px;height:22px;background:var(--fg)}
   .tag .dot i{display:block}
   .legend{display:flex}
   .mats{grid-template-columns:1fr}
   form{grid-template-columns:1fr}
+  .mbar{display:flex}
+  .cfg-sum{grid-template-columns:1fr 1fr}
+  .cfg-sum > :last-child{grid-column:1 / -1}
+  .cmp th:not(:first-child),.cmp td:not(:first-child){width:18%}
+  .cmp{font-size:13px}
+  .cmp th,.cmp td{padding:12px 6px}
 }
 @media (max-width:600px){
   .grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .step:nth-child(odd){padding-right:0;border-right:0}
   .step:nth-child(even){padding-left:0}
+  .tiles{grid-template-columns:1fr}
   .foot .wrap{grid-template-columns:1fr}
+  .cities{grid-template-columns:1fr}
 }
 @media (max-width:420px){
   .mark-star{display:none}
@@ -287,6 +449,8 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
 @media (prefers-reduced-motion:reduce){
   .rv{transition:none;opacity:1;transform:none}
   html{scroll-behavior:auto}
+  .marq .row{animation:none}
+  .map .ring{animation:none}
 }
 </style>
 <script type="importmap">
@@ -304,14 +468,16 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
 <header class="chrome" id="chrome">
   <a class="mark" href="#top" data-go="0"><span class="mark-star" aria-hidden="true">&#10037;</span>&nbsp;Hearth &amp; Slab</a>
   <nav class="nav">
-    <a data-go="0.40" data-i18n="nav.parts">Peças</a>
-    <a href="#modelos" data-i18n="nav.models">Modelos</a>
-    <a href="#processo" data-i18n="nav.process">Processo</a>
-    <a href="#materiais" data-i18n="nav.materials">Materiais</a>
+    <a href="#modelos" data-i18n="nav.models"></a>
+    <a href="#configurador" data-i18n="nav.cfg"></a>
+    <a href="#florida" data-i18n="nav.florida"></a>
+    <a href="#processo" data-i18n="nav.process"></a>
+    <a href="#garantia" data-i18n="nav.warranty"></a>
     <a class="lang" id="lang" role="button" aria-label="Idioma / Language"><span data-lang="pt">PT</span><span data-lang="en">EN</span></a>
-    <a class="pill" href="#orcamento" data-i18n="nav.quote">Pedir orçamento</a>
+    <a class="pill" href="#orcamento" data-i18n="nav.quote"></a>
   </nav>
 </header>
+<div class="mbar" id="mbar"><a class="pill pill--ghost" href="tel:+18135550142" data-i18n="mbar.call"></a><a class="pill pill--ember" href="#orcamento" data-i18n="mbar.quote"></a></div>
 
 <!-- ================= sticky 3D hero ================= -->
 <div class="hero" id="top">
@@ -323,7 +489,8 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
         <div class="eyebrow" data-i18n="p1.eyebrow"></div>
         <h1 data-i18n="p1.h1"></h1>
         <p class="sub" data-i18n="p1.sub"></p>
-        <div class="cta"><a class="pill" data-go="0.40" data-i18n="p1.cta"></a></div>
+        <div class="cta"><a class="pill pill--ember" href="#configurador" data-i18n="p1.cta"></a><a class="pill pill--ghost" data-go="0.40" data-i18n="p1.cta2"></a></div>
+        <div class="trust"><span class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span data-i18n="p1.trust1"></span><i></i><span data-i18n="p1.trust2"></span><i></i><span data-i18n="p1.trust3"></span></div>
         <div class="hint"><i></i><span data-i18n="p1.hint"></span></div>
       </section>
       <section class="panel panel--low" data-panel>
@@ -342,12 +509,15 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
         <div class="eyebrow" data-i18n="p4.eyebrow"></div>
         <h1 data-i18n="p4.h1"></h1>
         <p class="sub" data-i18n="p4.sub"></p>
-        <div class="cta"><a class="pill" href="#orcamento" data-i18n="p4.cta"></a><a class="pill pill--ghost" href="tel:+16155550142" data-i18n="p4.call"></a></div>
+        <div class="cta"><a class="pill pill--ember" href="#orcamento" data-i18n="p4.cta"></a><a class="pill pill--ghost" href="tel:+18135550142" data-i18n="p4.call"></a></div>
       </section>
     </main>
     <div class="hero-foot" data-i18n="hero.foot"></div>
   </div>
 </div>
+
+<!-- ================= brands marquee ================= -->
+<div class="marq" aria-hidden="true"><span class="lbl" data-i18n="marq.lbl"></span><div class="row" id="marq"></div></div>
 
 <!-- ================= models ================= -->
 <section class="section" id="modelos">
@@ -359,6 +529,43 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
     <div class="grid" id="models"></div>
   </div>
 </section>
+
+<div class="bridge"></div>
+
+<!-- ================= configurator ================= -->
+<section class="section section--ink section--glow" id="configurador">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><div class="eyebrow" data-i18n="cfg.eyebrow"></div><h2 data-i18n="cfg.h2"></h2></div>
+      <p class="lead" data-i18n="cfg.lead"></p>
+    </div>
+    <div class="cfg rv">
+      <div class="cfg-opts" id="cfgOpts"></div>
+      <div>
+        <div class="cfg-view" id="cfgView"><canvas id="cfgCanvas"></canvas><div class="hud"><span data-i18n="cfg.hud1"></span><span><b id="cfgLen"></b></span></div></div>
+        <div class="cfg-sum">
+          <div><div class="k" data-i18n="cfg.k1"></div><div class="v" id="cfgPrice"></div><div class="fin" id="cfgFin"></div></div>
+          <div><div class="k" data-i18n="cfg.k2"></div><div class="v" id="cfgDays"></div></div>
+          <a class="pill pill--ember" href="#orcamento" id="cfgSend" data-i18n="cfg.send"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= built for florida ================= -->
+<section class="section section--ink" id="florida">
+  <div class="wrap">
+    <div class="band rv" id="band"></div>
+    <div class="sec-head rv" style="margin-top:clamp(48px,6vw,88px)">
+      <div><div class="eyebrow" data-i18n="fl.eyebrow"></div><h2 data-i18n="fl.h2"></h2></div>
+      <p class="lead" data-i18n="fl.lead"></p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</section>
+
+<div class="bridge bridge--alt"></div>
 
 <!-- ================= process ================= -->
 <section class="section section--alt" id="processo">
@@ -382,14 +589,71 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
   </div>
 </section>
 
+<!-- ================= warranty + financing ================= -->
+<section class="section section--alt" id="garantia">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><div class="eyebrow" data-i18n="wf.eyebrow"></div><h2 data-i18n="wf.h2"></h2></div>
+      <p class="lead" data-i18n="wf.lead"></p>
+    </div>
+    <div class="wf rv" id="wf"></div>
+  </div>
+</section>
+
+<!-- ================= compare ================= -->
+<section class="section" id="comparar">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><div class="eyebrow" data-i18n="cmp.eyebrow"></div><h2 data-i18n="cmp.h2"></h2></div>
+      <p class="lead" data-i18n="cmp.lead"></p>
+    </div>
+    <div class="rv" style="overflow-x:auto"><table class="cmp" id="cmp"></table></div>
+  </div>
+</section>
+
+<div class="bridge"></div>
+
 <!-- ================= testimonials ================= -->
-<section class="section section--dark" id="depoimentos">
+<section class="section section--ink section--glow" id="depoimentos">
   <div class="wrap">
     <div class="sec-head rv">
       <div><div class="eyebrow" data-i18n="quotes.eyebrow"></div><h2 data-i18n="quotes.h2"></h2></div>
       <p class="lead" data-i18n="quotes.lead"></p>
     </div>
     <div class="quotes" id="quotes"></div>
+  </div>
+</section>
+
+<div class="bridge bridge--up"></div>
+
+<!-- ================= service area ================= -->
+<section class="section" id="atendimento">
+  <div class="wrap">
+    <div class="area">
+      <div class="rv">
+        <div class="eyebrow" style="justify-content:flex-start;margin-bottom:14px" data-i18n="area.eyebrow"></div>
+        <h2 data-i18n="area.h2"></h2>
+        <p class="lead" style="margin-top:18px" data-i18n="area.lead"></p>
+        <ul class="cities" id="cities"></ul>
+      </div>
+      <div class="map rv">
+        <svg viewBox="-4 -2 104 100" aria-hidden="true">
+          <path class="fl" d="M2.4 11.2 L3.6 2.8 L33.6 2.8 L34.8 7 L69.6 9.8 L75.6 7 L76.8 11.2 L81.6 26.6 L86.4 39.2 L93 63 L91.8 75.6 L88.8 84 L81.6 91 L72 92.4 L80.4 85.4 L72 71.4 L67.2 60.2 L62.4 49 L60 36.4 L52.8 25.2 L42 16.8 L28.8 21 L15.6 12.6 Z"/>
+          <g id="mapPts"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= faq ================= -->
+<section class="section section--alt" id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><div class="eyebrow" data-i18n="faq.eyebrow"></div><h2 data-i18n="faq.h2"></h2></div>
+      <p class="lead" data-i18n="faq.lead"></p>
+    </div>
+    <div class="faq rv" id="faqList"></div>
   </div>
 </section>
 
@@ -402,7 +666,7 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
         <h2 data-i18n="form.h2"></h2>
         <p class="lead" data-i18n="form.lead"></p>
         <dl>
-          <dt data-i18n="form.dt1"></dt><dd><a href="tel:+16155550142">(615) 555-0142</a></dd>
+          <dt data-i18n="form.dt1"></dt><dd><a href="tel:+18135550142">(813) 555-0142</a></dd>
           <dt data-i18n="form.dt2"></dt><dd><a href="mailto:hello@hearthandslab.com">hello@hearthandslab.com</a></dd>
           <dt data-i18n="form.dt3"></dt><dd data-i18n="form.dd3"></dd>
           <dt data-i18n="form.dt4"></dt><dd data-i18n="form.dd4"></dd>
@@ -414,7 +678,7 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
         <div class="f"><label for="fCity" data-i18n="form.city"></label><input id="fCity" name="city" type="text" autocomplete="address-level2"></div>
         <div class="f"><label for="fModel" data-i18n="form.model"></label><select id="fModel" name="model"></select></div>
         <div class="f full"><label for="fMsg" data-i18n="form.msg"></label><textarea id="fMsg" name="message"></textarea></div>
-        <div class="form-foot"><button class="pill" type="submit" data-i18n="form.send"></button><small data-i18n="form.note"></small></div>
+        <div class="form-foot"><button class="pill pill--ember" type="submit" data-i18n="form.send"></button><small data-i18n="form.note"></small></div>
       </form>
     </div>
   </div>
@@ -422,6 +686,7 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
 
 <footer class="foot">
   <div class="wrap">
+    <div class="big" data-i18n="foot.big"></div>
     <div>
       <h4><span class="mark-star" aria-hidden="true">&#10037;</span> Hearth &amp; Slab</h4>
       <p data-i18n="foot.about"></p>
@@ -434,10 +699,15 @@ input:focus,select:focus,textarea:focus{border-bottom-color:var(--fg)}
       <h4 data-i18n="foot.links"></h4>
       <ul>
         <li><a href="#modelos" data-i18n="nav.models"></a></li>
+        <li><a href="#configurador" data-i18n="nav.cfg"></a></li>
         <li><a href="#processo" data-i18n="nav.process"></a></li>
-        <li><a href="#materiais" data-i18n="nav.materials"></a></li>
-        <li><a href="#orcamento" data-i18n="nav.quote"></a></li>
+        <li><a href="#garantia" data-i18n="nav.warranty"></a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.contact"></h4>
+      <ul><li><a href="tel:+18135550142">(813) 555-0142</a></li><li><a href="mailto:hello@hearthandslab.com">hello@hearthandslab.com</a></li><li data-i18n="foot.hours"></li></ul>
     </div>
     <div class="copy"><span>&copy; 2026 Hearth &amp; Slab</span><span data-i18n="foot.copy"></span></div>
   </div>
@@ -457,9 +727,11 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
    Hearth & Slab — scroll-scrubbed 3D landing page.
    Section 1 is a sticky WebGL scene: turntable -> exploded view
    with labels -> reassembly, driven by scroll. Below it, regular
-   sections with six model cards, each rendered live in 3D by a
-   second small renderer (hover to spin). All copy lives in the
-   I18N table and is swapped by the PT/EN toggle.
+   sections: six model cards rendered live in 3D, a configurator
+   that rebuilds the kitchen and its price as you toggle modules,
+   Florida-specific engineering, process, materials, warranty and
+   financing, a comparison table, reviews, a service map, FAQ and
+   the quote form. All copy lives in I18N (PT/EN toggle).
    ============================================================ */
 
 const DEFAULT_LANG = 'pt';
@@ -467,111 +739,206 @@ const DEFAULT_LANG = 'pt';
 /* ------------------------------------------------------------ copy */
 const I18N = {
   pt: {
-    title: 'Hearth & Slab — Cozinhas Externas',
-    nav: { parts:'Peças', models:'Modelos', process:'Processo', materials:'Materiais', quote:'Pedir orçamento' },
-    p1: { eyebrow:'Cozinhas externas <span>&middot;</span> Franklin, Tennessee', h1:'Sua cozinha,<br />do lado de fora.', sub:'Tijolo, concreto moldado e aço inox, construídos no seu quintal em três dias. Role a página para ver como ela se desmonta.', cta:'Ver cada peça', hint:'Role' },
+    title: 'Hearth & Slab — Cozinhas Externas na Flórida',
+    nav: { models:'Modelos', cfg:'Monte a sua', florida:'Feito pra Flórida', process:'Processo', warranty:'Garantia', quote:'Pedir orçamento' },
+    mbar: { call:'Ligar', quote:'Orçamento grátis' },
+    p1: { eyebrow:'Cozinhas externas <span>&middot;</span> Tampa Bay, Flórida', h1:'Sua cozinha,<br />do lado de fora.', sub:'Tijolo, concreto moldado e inox marítimo, projetados em 3D e construídos no seu quintal em três dias. Role para ver como ela se desmonta.', cta:'Monte a sua em 3D', cta2:'Ver cada peça', trust1:'4,9 em 380 avaliações', trust2:'Garantia vitalícia', trust3:'Financiamento 0%', hint:'Role' },
     p2: { eyebrow:'Cada peça, com nome', h1:'Sete peças. Nenhum atalho.', sub:'Da base de tijolo à torre de chope, cada peça é escolhida com você e instalada pela nossa própria equipe. Nada é terceirizado.' },
     p3: { eyebrow:'Na obra', h1:'Montada de novo<br />até sexta.', sub:'Fundação na segunda, tijolo na terça, concreto na quarta, equipamentos na quinta. No fim de semana você já está assando.',
-          stats:[['3 dias','instalação'],['36"','churrasqueira 4 queimadores'],['10 anos','garantia da alvenaria']] },
-    p4: { eyebrow:'Comece aqui', h1:'Feita para<br />o seu quintal.', sub:'Mande uma foto do seu espaço e devolvemos um projeto e um preço fechado em 48 horas.', cta:'Pedir orçamento', call:'Ligar (615) 555-0142' },
-    hero: { foot:'Franklin, TN &nbsp;&middot;&nbsp; Seg–Sáb, 8h–18h &nbsp;&middot;&nbsp; Licenciados e segurados' },
+          stats:[['3 dias','instalação'],['36"','churrasqueira 4 queimadores'],['Vitalícia','garantia estrutural']] },
+    p4: { eyebrow:'Comece aqui', h1:'Feita para<br />o seu quintal.', sub:'Mande uma foto do seu espaço e devolvemos um projeto 3D e um preço fechado em 48 horas.', cta:'Pedir orçamento grátis', call:'Ligar (813) 555-0142' },
+    hero: { foot:'Tampa, FL &nbsp;&middot;&nbsp; Seg–Sáb, 8h–18h &nbsp;&middot;&nbsp; Licença CBC #1265440 &nbsp;&middot;&nbsp; Segurados' },
     parts: [
-      ['Base de tijolo','Tijolo cinza king-size, garantia de 10 anos'],
+      ['Base de tijolo','Tijolo cinza king-size sobre sapata ancorada'],
       ['Bancada de concreto','5 cm moldado no local, polido e selado'],
-      ['Churrasqueira 36"','Quatro queimadores em inox 304, 72.000 BTU'],
+      ['Churrasqueira 36"','Quatro queimadores em inox 316, 72.000 BTU'],
       ['Tampa dupla','Amortecida, fria ao toque'],
-      ['Portas de acesso','Duplas, inox 304, fechamento suave'],
+      ['Portas de acesso','Duplas, inox 316, fechamento suave'],
       ['Kegerator','Para área externa, cabe meio barril'],
       ['Torre de chope','Duas torneiras, linhas resfriadas a glicol']
     ],
+    marq: { lbl:'Marcas que instalamos' },
     models: { eyebrow:'Modelos', h2:'Seis layouts. Infinitas combinações.', lead:'Todo projeto começa em um destes seis e termina do seu jeito. Passe o mouse ou o dedo sobre o card para girar a cozinha.', from:'a partir de', rot:'Girar', go:'Quero este',
       badges:{ top:'Mais pedido', new:'Novo' },
       list:[
         { name:'Linha Reta', len:'3,4 m', desc:'O clássico encostado na parede. Churrasqueira no centro, chope à direita, portas embaixo.', tags:['Churrasqueira 36"','Kegerator','Portas duplas'], price:'US$ 18.900' },
-        { name:'Compacta', len:'2,4 m', desc:'Para varandas e pátios menores. Nada sobra, nada falta.', tags:['Churrasqueira 32"','Portas duplas'], price:'US$ 12.500' },
-        { name:'Em L', len:'3,4 + 1,8 m', desc:'Um braço para cozinhar, outro para preparar e lavar. Ideal para cantos.', tags:['Churrasqueira 36"','Pia','Kegerator'], price:'US$ 26.800' },
-        { name:'Ilha com Bar', len:'3,6 m', desc:'Balcão elevado nas costas com três bancos. Quem cozinha fica de frente para os convidados.', tags:['Churrasqueira 36"','Kegerator','Bar para 3'], price:'US$ 24.400' },
+        { name:'Compacta', len:'2,4 m', desc:'Para lanais e pátios menores. Nada sobra, nada falta.', tags:['Churrasqueira 32"','Portas duplas'], price:'US$ 12.500' },
+        { name:'Em L', len:'3,4 + 1,8 m', desc:'Um braço para cozinhar, outro para preparar e lavar. Ideal para cantos de lanai.', tags:['Churrasqueira 36"','Pia','Kegerator'], price:'US$ 26.800' },
+        { name:'Ilha com Bar', len:'3,6 m', desc:'Balcão elevado nas costas com três bancos. Quem cozinha fica de frente para a piscina.', tags:['Churrasqueira 36"','Kegerator','Bar para 3'], price:'US$ 24.400' },
         { name:'Forno de Pizza', len:'4,2 m', desc:'Churrasqueira de um lado e forno a lenha em tijolo do outro. Noites de pizza garantidas.', tags:['Churrasqueira 36"','Forno a lenha','Gaveteiro'], price:'US$ 31.200' },
         { name:'Completa', len:'4,6 m', desc:'Tudo que cabe em uma cozinha externa: boca lateral, pia, gaveteiro, chope e a maior churrasqueira.', tags:['Churrasqueira 42"','Boca lateral','Pia','Kegerator','Gavetas'], price:'US$ 38.700' }
       ] },
+    cfg: { eyebrow:'Configurador', h2:'Monte a sua. Veja o preço na hora.', lead:'Escolha os módulos e a cozinha se reconstrói em 3D com o preço atualizado. Arraste para girar. Quando gostar, mande a configuração para a gente.',
+      hud1:'Comprimento', k1:'Preço estimado', k2:'Prazo', send:'Pedir orçamento desta configuração', fin:'ou <b>{m}/mês</b> em 24x sem juros', days:'3 dias', days4:'4 dias',
+      groups:[
+        { key:'grill', name:'Churrasqueira', single:true, opts:[['g32','32"','3 queimadores'],['g36','36"','4 queimadores'],['g42','42"','5 queimadores']] },
+        { key:'mods', name:'Módulos', opts:[['keg','Kegerator','+ torre de chope'],['sink','Pia','com torneira'],['burner','Boca lateral','wok e panelas'],['drawers','Gaveteiro','3 gavetas'],['oven','Forno de pizza','a lenha, em tijolo']] },
+        { key:'layout', name:'Layout', single:true, opts:[['straight','Linha reta',''],['l','Em L','+ braço de 1,8 m'],['bar','Com bar','+ 3 bancos']] }
+      ] },
+    fl: { eyebrow:'Feito para a Flórida', h2:'Sal, sol, umidade e furacão. Projetada para os quatro.', lead:'Uma cozinha externa na Flórida vive num ambiente que destrói inox comum em três anos. Nós especificamos como quem constrói barco.',
+      band:[['<em>600</em>+','cozinhas construídas'],['4,9<em>★</em>','380 avaliações Google'],['12','anos na Flórida'],['<em>0</em>%','24 meses de financiamento']],
+      tiles:[
+        ['salt','Ar salgado','Todo metal exposto é inox 316 grau marítimo, o mesmo dos barcos. Ferragens em aço 316 e parafusos sem contato galvânico.','316','inox marítimo'],
+        ['wind','Temporada de furacões','Base ancorada em sapata de concreto com chumbadores. A estrutura não é um móvel apoiado: ela é parte da laje.','160 mph','vento de projeto'],
+        ['sun','Sol o ano inteiro','Selante de concreto com filtro UV e argamassa pigmentada. Nada de tampo de polímero que amarela ou empena no calor.','UV','selante estável'],
+        ['rain','Chuva e umidade','Tijolo maciço, concreto e aço. Zero madeira, zero MDF, zero gesso. Nada que absorva água ou crie mofo.','0','madeira ou MDF']
+      ] },
     process: { eyebrow:'Processo', h2:'Quatro dias, do papel ao fogo.', lead:'Você não recebe uma equipe diferente a cada etapa. O mesmo time que desenha é o que assenta o tijolo e liga o gás.',
       steps:[
-        ['Projeto','48 horas','Você manda uma foto do espaço. Nós devolvemos planta, render 3D e um preço fechado, sem surpresas depois.'],
-        ['Fundação e alvenaria','Dia 1','Sapata de concreto e base em tijolo king-size assentada pela nossa própria equipe de pedreiros.'],
-        ['Bancada','Dia 2','Concreto moldado no local com 5 cm, cura assistida, polimento e selante contra manchas de gordura.'],
+        ['Projeto 3D','48 horas','Você manda uma foto do lanai. Nós devolvemos planta, render 3D e um preço fechado, sem surpresas depois.'],
+        ['Fundação e alvenaria','Dia 1','Sapata de concreto ancorada e base em tijolo king-size assentada pela nossa própria equipe de pedreiros.'],
+        ['Bancada','Dia 2','Concreto moldado no local com 5 cm, cura assistida, polimento e selante UV contra manchas de gordura.'],
         ['Equipamentos','Dia 3','Churrasqueira, gás, parte elétrica e linha de chope instalados, testados e entregues com você assando.']
       ] },
-    mat: { eyebrow:'Materiais', h2:'Três materiais. Nenhum imita o outro.', lead:'Tudo o que usamos é feito para ficar ao ar livre por décadas, com sol, chuva e gordura.',
+    mat: { eyebrow:'Materiais', h2:'Três materiais. Nenhum imita o outro.', lead:'Tudo o que usamos é feito para ficar ao ar livre por décadas, com sol, chuva, sal e gordura.',
       list:[
-        ['Tijolo cinza tumbled','King-size &middot; assentado com argamassa clara','Tijolo maciço de barro com acabamento envelhecido. Não descasca, não desbota e ganha caráter com o tempo.'],
-        ['Concreto polido','5 cm &middot; moldado no local','Bancada monolítica sem emendas, com cantos arredondados, lixada até ficar lisa e selada contra manchas.'],
-        ['Aço inox 304','Grau marinho &middot; escovado','Todos os equipamentos e portas em inox 304, o mesmo grau usado em cozinhas profissionais e barcos.']
+        ['Tijolo cinza tumbled','King-size &middot; argamassa pigmentada','Tijolo maciço de barro com acabamento envelhecido. Não descasca, não desbota e ganha caráter com o tempo.'],
+        ['Concreto polido','5 cm &middot; moldado no local','Bancada monolítica sem emendas, com cantos arredondados, lixada até ficar lisa e selada com filtro UV.'],
+        ['Aço inox 316','Grau marítimo &middot; escovado','Todos os equipamentos e portas em inox 316, um grau acima do 304 que a maioria usa. Feito para ar salgado.']
       ] },
-    quotes: { eyebrow:'Clientes', h2:'Quem já está assando.', lead:'Mais de 140 cozinhas construídas no centro do Tennessee desde 2019.',
+    wf: { eyebrow:'Garantia e financiamento', h2:'Vitalícia na estrutura. Zero juros no bolso.', lead:'A garantia mais longa da Flórida e o financiamento mais simples: aprovação em minutos, sem entrada.',
+      w:{ big:'Vitalícia', small:'garantia estrutural', h3:'Tijolo, concreto e fundação cobertos enquanto você for dono da casa.', items:['10 anos nos equipamentos, direto do fabricante','5 anos em gás, elétrica e linha de chope','Visita de revisão gratuita a cada 2 anos','Transferível para o próximo dono da casa'] },
+      f:{ big:'0%', small:'24 meses sem juros', h3:'Financiamento aprovado em minutos, sem entrada.', items:['Parcelas a partir de US$ 520/mês','Sem multa por quitação antecipada','Também aceitamos HELOC e cartões','Preço fechado antes de começar, nunca muda'] } },
+    cmp: { eyebrow:'Compare', h2:'O que você recebe aqui e não recebe lá.', lead:'Comparamos com o que os principais construtores da Flórida anunciam nos próprios sites.',
+      cols:['','Hearth & Slab','Fabricante de ilhas','Construtor local'],
+      rows:[
+        ['Projeto 3D e preço fechado em 48 h',1,'part',0],
+        ['Configurador 3D com preço ao vivo',1,'part',0],
+        ['Equipe própria, sem terceirizados',1,0,'part'],
+        ['Inox 316 grau marítimo',1,0,0],
+        ['Base ancorada em sapata (furacão)',1,0,'part'],
+        ['Garantia vitalícia na estrutura',1,'part',0],
+        ['Financiamento 0% em 24 meses',1,1,0],
+        ['Instalação em 3 dias',1,0,0]
+      ], part:'parcial' },
+    quotes: { eyebrow:'Clientes', h2:'Quem já está assando.', lead:'Mais de 600 cozinhas construídas de Tampa a Naples desde 2014.',
       list:[
-        ['Fecharam o preço na segunda e na sexta eu já estava com amigos em volta da churrasqueira. Não pediram nada a mais.','Sarah M., Brentwood'],
-        ['A bancada de concreto é a parte que todo mundo comenta. Três anos depois, sem uma mancha.','Daniel R., Franklin'],
-        ['Fizemos o modelo em L com forno de pizza. A equipe deixou o quintal mais limpo do que encontrou.','Emily &amp; Josh T., Nolensville']
+        ['Fecharam o preço na segunda e na sexta eu já estava com amigos em volta da churrasqueira. Não pediram nada a mais.','Sarah M., St. Petersburg'],
+        ['Passou o Ian sem uma rachadura. A bancada de concreto é a parte que todo mundo comenta. Três anos depois, sem uma mancha.','Daniel R., Fort Myers'],
+        ['Fizemos o modelo em L com forno de pizza no lanai. A equipe deixou o quintal mais limpo do que encontrou.','Emily &amp; Josh T., Sarasota']
       ] },
-    form: { eyebrow:'Orçamento', h2:'Vamos desenhar a sua.', lead:'Preencha o básico e mande uma foto do espaço depois por e-mail. Em até 48 horas úteis você recebe planta, render e preço.',
-      dt1:'Telefone', dt2:'E-mail', dt3:'Endereço', dd3:'112 Hearth Lane, Franklin, TN 37064', dt4:'Horário', dd4:'Seg–Sáb, 8h–18h',
-      name:'Nome', email:'E-mail', city:'Cidade', model:'Modelo de interesse', msg:'Conte sobre o espaço', send:'Enviar pedido', note:'Sem compromisso. Respondemos em até 48 horas úteis.', any:'Ainda não sei',
+    area: { eyebrow:'Onde atendemos', h2:'Da Baía de Tampa a Naples. E Orlando.', lead:'Showroom em Tampa e equipes fixas na costa do Golfo e em Orlando. Visita de medição gratuita em toda a área.',
+      cities:[['Tampa','showroom e sede'],['St. Petersburg','30 min'],['Clearwater','35 min'],['Sarasota','1 h'],['Lakeland','50 min'],['Orlando','1 h 30'],['Fort Myers','2 h'],['Naples','2 h 30']] },
+    faq: { eyebrow:'Perguntas frequentes', h2:'O que todo mundo pergunta antes de fechar.', lead:'Se a sua não estiver aqui, ligue. Quem atende é quem constrói.',
+      list:[
+        ['Preciso de licença da prefeitura?','Sim, e nós cuidamos disso. Toda cozinha com gás ou elétrica precisa de permit no condado. O custo já está no preço fechado.'],
+        ['Quanto tempo leva do orçamento à obra?','Projeto em 48 h, permit em 2 a 3 semanas na maioria dos condados, obra em 3 dias. Da primeira foto ao primeiro churrasco: cerca de um mês.'],
+        ['Posso instalar num lanai com tela?','Sim. É o caso mais comum na Flórida. Usamos coifa quando a cobertura é fechada e adaptamos a base ao piso existente.'],
+        ['E se eu já tiver uma churrasqueira?','Se ela for de embutir e estiver em bom estado, aproveitamos. Você paga só a estrutura.'],
+        ['Concreto não mancha?','Concreto sem selante mancha. O nosso recebe selante penetrante com filtro UV e é reaplicado grátis na visita de revisão.'],
+        ['Vocês trabalham com HOA?','Toda semana. Entregamos o pacote de desenhos que a maioria das associações pede, sem custo.']
+      ] },
+    form: { eyebrow:'Orçamento grátis', h2:'Vamos desenhar a sua.', lead:'Preencha o básico e mande uma foto do lanai depois por e-mail. Em até 48 horas úteis você recebe planta, render 3D e preço fechado.',
+      dt1:'Telefone', dt2:'E-mail', dt3:'Showroom', dd3:'4120 Gulf Coast Blvd, Tampa, FL 33607', dt4:'Horário', dd4:'Seg–Sáb, 8h–18h',
+      name:'Nome', email:'E-mail', city:'Cidade', model:'Modelo de interesse', msg:'Conte sobre o espaço', send:'Enviar pedido', note:'Sem compromisso. Respondemos em até 48 horas úteis.', any:'Ainda não sei', custom:'Configuração personalizada',
       subject:'Pedido de orçamento — cozinha externa' },
-    foot: { about:'Cozinhas externas em tijolo, concreto e inox, projetadas e construídas pela nossa própria equipe no centro do Tennessee.', visit:'Visite o showroom', addr:'112 Hearth Lane<br />Franklin, TN 37064<br />Seg–Sáb, 8h–18h', links:'Navegar', copy:'Licença TN #HIC-48211 &middot; Segurados' }
+    foot: { big:'Feita para <em>durar</em> na Flórida.', about:'Cozinhas externas em tijolo, concreto e inox 316, projetadas e construídas pela nossa própria equipe na costa do Golfo da Flórida.', visit:'Showroom', addr:'4120 Gulf Coast Blvd<br />Tampa, FL 33607<br />Seg–Sáb, 8h–18h', links:'Navegar', contact:'Contato', hours:'Seg–Sáb, 8h–18h', copy:'Licença CBC #1265440 &middot; Segurados' }
   },
   en: {
-    title: 'Hearth & Slab — Outdoor Kitchens',
-    nav: { parts:'Parts', models:'Models', process:'Process', materials:'Materials', quote:'Get a quote' },
-    p1: { eyebrow:'Outdoor kitchens <span>&middot;</span> Franklin, Tennessee', h1:'Your kitchen,<br />moved outside.', sub:'Brick, poured concrete and stainless steel, built on your patio in three days. Scroll to see how it comes apart.', cta:'See every part', hint:'Scroll' },
+    title: 'Hearth & Slab — Outdoor Kitchens in Florida',
+    nav: { models:'Models', cfg:'Build yours', florida:'Built for Florida', process:'Process', warranty:'Warranty', quote:'Get a quote' },
+    mbar: { call:'Call', quote:'Free quote' },
+    p1: { eyebrow:'Outdoor kitchens <span>&middot;</span> Tampa Bay, Florida', h1:'Your kitchen,<br />moved outside.', sub:'Brick, poured concrete and marine-grade stainless, designed in 3D and built on your patio in three days. Scroll to see how it comes apart.', cta:'Build yours in 3D', cta2:'See every part', trust1:'4.9 from 380 reviews', trust2:'Lifetime warranty', trust3:'0% financing', hint:'Scroll' },
     p2: { eyebrow:'Every part, named', h1:'Seven pieces. Zero shortcuts.', sub:'From the brick base to the tap tower, each piece is chosen with you and installed by our own crew. Nothing is subcontracted.' },
     p3: { eyebrow:'On site', h1:'Back together<br />by Friday.', sub:'Footings Monday, brick Tuesday, concrete Wednesday, appliances Thursday. You are grilling by the weekend.',
-          stats:[['3 days','install'],['36"','four-burner grill'],['10 yr','masonry warranty']] },
-    p4: { eyebrow:'Start here', h1:'Built for<br />your backyard.', sub:'Send us a photo of your patio and we will send back a layout and a fixed price within 48 hours.', cta:'Get a quote', call:'Call (615) 555-0142' },
-    hero: { foot:'Franklin, TN &nbsp;&middot;&nbsp; Mon–Sat, 8am–6pm &nbsp;&middot;&nbsp; Licensed &amp; insured' },
+          stats:[['3 days','install'],['36"','four-burner grill'],['Lifetime','structural warranty']] },
+    p4: { eyebrow:'Start here', h1:'Built for<br />your backyard.', sub:'Send us a photo of your patio and we will send back a 3D design and a fixed price within 48 hours.', cta:'Get a free quote', call:'Call (813) 555-0142' },
+    hero: { foot:'Tampa, FL &nbsp;&middot;&nbsp; Mon–Sat, 8am–6pm &nbsp;&middot;&nbsp; License CBC #1265440 &nbsp;&middot;&nbsp; Insured' },
     parts: [
-      ['Brick base','Tumbled gray king-size, 10 yr masonry warranty'],
+      ['Brick base','Tumbled gray king-size on an anchored footing'],
       ['Concrete counter','2" poured in place, honed and sealed'],
-      ['36" Grill','Four 304-stainless burners, 72,000 BTU'],
+      ['36" Grill','Four 316-stainless burners, 72,000 BTU'],
       ['Double-wall hood','Spring-assist, stays cool to the touch'],
-      ['Access doors','Double, 304 stainless, soft-close'],
+      ['Access doors','Double, 316 stainless, soft-close'],
       ['Kegerator','Outdoor rated, holds a half barrel'],
       ['Tap tower','Dual faucet, glycol-chilled lines']
     ],
+    marq: { lbl:'Brands we install' },
     models: { eyebrow:'Models', h2:'Six layouts. Endless combinations.', lead:'Every project starts as one of these six and ends up your way. Hover or swipe a card to spin the kitchen.', from:'from', rot:'Spin', go:'I want this one',
       badges:{ top:'Most popular', new:'New' },
       list:[
         { name:'Straight Run', len:'11 ft', desc:'The classic against a wall. Grill in the middle, beer on the right, storage below.', tags:['36" grill','Kegerator','Double doors'], price:'$18,900' },
-        { name:'Compact', len:'8 ft', desc:'For smaller patios and porches. Nothing extra, nothing missing.', tags:['32" grill','Double doors'], price:'$12,500' },
-        { name:'L-Shape', len:'11 + 6 ft', desc:'One arm for cooking, one for prep and washing up. Made for corners.', tags:['36" grill','Sink','Kegerator'], price:'$26,800' },
-        { name:'Island Bar', len:'12 ft', desc:'Raised counter on the back with three stools. The cook faces the guests.', tags:['36" grill','Kegerator','Seats 3'], price:'$24,400' },
+        { name:'Compact', len:'8 ft', desc:'For smaller lanais and patios. Nothing extra, nothing missing.', tags:['32" grill','Double doors'], price:'$12,500' },
+        { name:'L-Shape', len:'11 + 6 ft', desc:'One arm for cooking, one for prep and washing up. Made for lanai corners.', tags:['36" grill','Sink','Kegerator'], price:'$26,800' },
+        { name:'Island Bar', len:'12 ft', desc:'Raised counter on the back with three stools. The cook faces the pool.', tags:['36" grill','Kegerator','Seats 3'], price:'$24,400' },
         { name:'Pizza Oven', len:'14 ft', desc:'Grill on one end, wood-fired brick oven on the other. Pizza night, sorted.', tags:['36" grill','Wood-fired oven','Drawers'], price:'$31,200' },
         { name:'The Works', len:'15 ft', desc:'Everything an outdoor kitchen can hold: side burner, sink, drawers, beer and the biggest grill.', tags:['42" grill','Side burner','Sink','Kegerator','Drawers'], price:'$38,700' }
       ] },
+    cfg: { eyebrow:'Configurator', h2:'Build yours. See the price live.', lead:'Pick your modules and the kitchen rebuilds itself in 3D with an updated price. Drag to spin. When you like it, send us the configuration.',
+      hud1:'Length', k1:'Estimated price', k2:'Install', send:'Request a quote for this build', fin:'or <b>{m}/mo</b> over 24 months, 0% APR', days:'3 days', days4:'4 days',
+      groups:[
+        { key:'grill', name:'Grill', single:true, opts:[['g32','32"','3 burners'],['g36','36"','4 burners'],['g42','42"','5 burners']] },
+        { key:'mods', name:'Modules', opts:[['keg','Kegerator','+ tap tower'],['sink','Sink','with faucet'],['burner','Side burner','wok and pots'],['drawers','Drawers','3-drawer stack'],['oven','Pizza oven','wood-fired brick']] },
+        { key:'layout', name:'Layout', single:true, opts:[['straight','Straight',''],['l','L-shape','+ 6 ft wing'],['bar','With bar','+ 3 stools']] }
+      ] },
+    fl: { eyebrow:'Built for Florida', h2:'Salt, sun, humidity and hurricanes. Engineered for all four.', lead:'A Florida outdoor kitchen lives in an environment that eats ordinary stainless in three years. We specify it the way boat builders do.',
+      band:[['<em>600</em>+','kitchens built'],['4.9<em>★</em>','380 Google reviews'],['12','years in Florida'],['<em>0</em>%','24-month financing']],
+      tiles:[
+        ['salt','Salt air','Every exposed metal is 316 marine-grade stainless, the boat-builder grade. 316 hardware and fasteners with no galvanic contact.','316','marine stainless'],
+        ['wind','Hurricane season','The base is anchored to a concrete footing with embedded bolts. It is not furniture sitting on a slab: it is part of the slab.','160 mph','design wind load'],
+        ['sun','Year-round sun','UV-stable concrete sealer and pigmented mortar. No polymer countertops that yellow or warp in the heat.','UV','stable sealer'],
+        ['rain','Rain and humidity','Solid brick, concrete and steel. Zero wood, zero MDF, zero drywall. Nothing that soaks up water or grows mold.','0','wood or MDF']
+      ] },
     process: { eyebrow:'Process', h2:'Four days, from paper to fire.', lead:'You do not get a different crew for each step. The team that draws it is the team that lays the brick and hooks up the gas.',
       steps:[
-        ['Design','48 hours','You send a photo of the space. We send back a plan, a 3D render and a fixed price, no surprises later.'],
-        ['Footings and brick','Day 1','Concrete footing and king-size brick base laid by our own masons.'],
-        ['Counter','Day 2','Two inches of concrete poured in place, cured, honed smooth and sealed against grease.'],
+        ['3D design','48 hours','You send a photo of the lanai. We send back a plan, a 3D render and a fixed price, no surprises later.'],
+        ['Footings and brick','Day 1','Anchored concrete footing and king-size brick base laid by our own masons.'],
+        ['Counter','Day 2','Two inches of concrete poured in place, cured, honed smooth and sealed with a UV-stable sealer.'],
         ['Appliances','Day 3','Grill, gas, electrical and beer line installed, tested and handed over with you grilling.']
       ] },
-    mat: { eyebrow:'Materials', h2:'Three materials. None pretending to be another.', lead:'Everything we use is made to live outdoors for decades, through sun, rain and grease.',
+    mat: { eyebrow:'Materials', h2:'Three materials. None pretending to be another.', lead:'Everything we use is made to live outdoors for decades, through sun, rain, salt and grease.',
       list:[
-        ['Tumbled gray brick','King-size &middot; light mortar','Solid clay brick with an aged finish. It does not peel or fade, it just gains character.'],
-        ['Honed concrete','2 inches &middot; poured in place','One seamless slab with eased edges, ground smooth and sealed against stains.'],
-        ['304 stainless steel','Marine grade &middot; brushed','Every appliance and door in 304 stainless, the same grade used in pro kitchens and boats.']
+        ['Tumbled gray brick','King-size &middot; pigmented mortar','Solid clay brick with an aged finish. It does not peel or fade, it just gains character.'],
+        ['Honed concrete','2 inches &middot; poured in place','One seamless slab with eased edges, ground smooth and sealed with a UV-stable sealer.'],
+        ['316 stainless steel','Marine grade &middot; brushed','Every appliance and door in 316 stainless, one grade above the 304 most builders use. Made for salt air.']
       ] },
-    quotes: { eyebrow:'Clients', h2:'Already grilling.', lead:'More than 140 kitchens built across Middle Tennessee since 2019.',
+    wf: { eyebrow:'Warranty and financing', h2:'Lifetime on the structure. Zero interest on the bill.', lead:'The longest warranty in Florida and the simplest financing: approval in minutes, nothing down.',
+      w:{ big:'Lifetime', small:'structural warranty', h3:'Brick, concrete and footing covered for as long as you own the home.', items:['10 years on appliances, straight from the manufacturer','5 years on gas, electrical and beer line','Free check-up visit every 2 years','Transferable to the next owner'] },
+      f:{ big:'0%', small:'24 months, no interest', h3:'Financing approved in minutes, nothing down.', items:['Payments from $520/mo','No early payoff penalty','HELOC and cards also accepted','Fixed price before we start, it never changes'] } },
+    cmp: { eyebrow:'Compare', h2:'What you get here and not there.', lead:'Compared against what the leading Florida builders advertise on their own websites.',
+      cols:['','Hearth & Slab','Island manufacturer','Local builder'],
+      rows:[
+        ['3D design and fixed price in 48 h',1,'part',0],
+        ['3D configurator with live pricing',1,'part',0],
+        ['Own crew, no subcontractors',1,0,'part'],
+        ['316 marine-grade stainless',1,0,0],
+        ['Base anchored to footing (hurricane)',1,0,'part'],
+        ['Lifetime structural warranty',1,'part',0],
+        ['0% financing over 24 months',1,1,0],
+        ['3-day installation',1,0,0]
+      ], part:'partial' },
+    quotes: { eyebrow:'Clients', h2:'Already grilling.', lead:'More than 600 kitchens built from Tampa to Naples since 2014.',
       list:[
-        ['They fixed the price on Monday and by Friday I had friends around the grill. Not a dollar more.','Sarah M., Brentwood'],
-        ['The concrete counter is the part everybody talks about. Three years in, not a single stain.','Daniel R., Franklin'],
-        ['We did the L-shape with the pizza oven. The crew left the yard cleaner than they found it.','Emily &amp; Josh T., Nolensville']
+        ['They fixed the price on Monday and by Friday I had friends around the grill. Not a dollar more.','Sarah M., St. Petersburg'],
+        ['Went through Ian without a crack. The concrete counter is the part everybody talks about. Three years in, not a single stain.','Daniel R., Fort Myers'],
+        ['We did the L-shape with the pizza oven on the lanai. The crew left the yard cleaner than they found it.','Emily &amp; Josh T., Sarasota']
       ] },
-    form: { eyebrow:'Quote', h2:'Let us draw yours.', lead:'Fill in the basics and email us a photo of the space afterwards. Within 48 business hours you get a plan, a render and a price.',
-      dt1:'Phone', dt2:'Email', dt3:'Address', dd3:'112 Hearth Lane, Franklin, TN 37064', dt4:'Hours', dd4:'Mon–Sat, 8am–6pm',
-      name:'Name', email:'Email', city:'City', model:'Model of interest', msg:'Tell us about the space', send:'Send request', note:'No commitment. We reply within 48 business hours.', any:'Not sure yet',
+    area: { eyebrow:'Where we build', h2:'Tampa Bay to Naples. And Orlando.', lead:'Showroom in Tampa and standing crews on the Gulf Coast and in Orlando. Free measuring visit across the whole area.',
+      cities:[['Tampa','showroom and HQ'],['St. Petersburg','30 min'],['Clearwater','35 min'],['Sarasota','1 h'],['Lakeland','50 min'],['Orlando','1 h 30'],['Fort Myers','2 h'],['Naples','2 h 30']] },
+    faq: { eyebrow:'FAQ', h2:'What everyone asks before signing.', lead:'If yours is not here, call. The person who answers is the person who builds.',
+      list:[
+        ['Do I need a permit?','Yes, and we handle it. Any kitchen with gas or electrical needs a county permit. The cost is already in the fixed price.'],
+        ['How long from quote to build?','Design in 48 h, permit in 2 to 3 weeks in most counties, build in 3 days. From first photo to first cookout: about a month.'],
+        ['Can you build inside a screened lanai?','Yes. It is the most common case in Florida. We add a vent hood under closed roofs and adapt the base to the existing slab.'],
+        ['What if I already own a grill?','If it is a built-in in good shape, we reuse it. You pay for the structure only.'],
+        ['Does concrete stain?','Unsealed concrete does. Ours gets a penetrating UV-stable sealer, reapplied free at the check-up visit.'],
+        ['Do you work with HOAs?','Every week. We deliver the drawing package most associations ask for, at no charge.']
+      ] },
+    form: { eyebrow:'Free quote', h2:'Let us draw yours.', lead:'Fill in the basics and email us a photo of the lanai afterwards. Within 48 business hours you get a plan, a 3D render and a fixed price.',
+      dt1:'Phone', dt2:'Email', dt3:'Showroom', dd3:'4120 Gulf Coast Blvd, Tampa, FL 33607', dt4:'Hours', dd4:'Mon–Sat, 8am–6pm',
+      name:'Name', email:'Email', city:'City', model:'Model of interest', msg:'Tell us about the space', send:'Send request', note:'No commitment. We reply within 48 business hours.', any:'Not sure yet', custom:'Custom configuration',
       subject:'Quote request — outdoor kitchen' },
-    foot: { about:'Outdoor kitchens in brick, concrete and stainless, designed and built by our own crew across Middle Tennessee.', visit:'Visit the showroom', addr:'112 Hearth Lane<br />Franklin, TN 37064<br />Mon–Sat, 8am–6pm', links:'Browse', copy:'TN license #HIC-48211 &middot; Insured' }
+    foot: { big:'Built to <em>last</em> in Florida.', about:'Outdoor kitchens in brick, concrete and 316 stainless, designed and built by our own crew on Florida\'s Gulf Coast.', visit:'Showroom', addr:'4120 Gulf Coast Blvd<br />Tampa, FL 33607<br />Mon–Sat, 8am–6pm', links:'Browse', contact:'Contact', hours:'Mon–Sat, 8am–6pm', copy:'License CBC #1265440 &middot; Insured' }
   }
+};
+const BRANDS = ['Blaze', 'Lynx', 'Coyote', 'Bull', 'Alfresco', 'Summerset', 'Hestan', 'Fire Magic', 'Twin Eagles', 'Napoleon', 'True', 'Perlick'];
+/* name, x, y, hq, label dx, dy, anchor */
+const CITIES = [['Tampa',62.4,49,true,2.4,0.9,'start'],['St. Petersburg',60.5,53.5,false,-2.2,1.2,'end'],['Clearwater',60,46.5,false,-2.2,0.6,'end'],['Sarasota',63.6,56.6,false,-2.2,2.2,'end'],['Lakeland',69,47,false,2.2,0.2,'start'],['Orlando',76.8,37.8,false,2.4,0.9,'start'],['Fort Myers',70.8,64.4,false,2.4,0.9,'start'],['Naples',72,71.4,false,2.4,0.9,'start']];
+const ICONS = {
+  salt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>',
+  wind:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h11a3 3 0 1 0-3-3M3 13h15a3 3 0 1 1-3 3M3 18h7"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>',
+  rain:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 15a4 4 0 0 1 .5-8A6 6 0 0 1 19 9a3.5 3.5 0 0 1-.5 7H7z"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/></svg>'
 };
 
 /* ------------------------------------------------------------ helpers */
@@ -581,9 +948,10 @@ const smooth = t => t * t * (3 - 2 * t);
 const ramp = (p, a, b) => (b <= a) ? (p >= b ? 1 : 0) : smooth(clamp((p - a) / (b - a), 0, 1));
 const wrapPi = a => Math.atan2(Math.sin(a), Math.cos(a));
 const get = (o, path) => path.split('.').reduce((x, k) => (x == null ? x : x[k]), o);
+const money = n => (lang === 'pt' ? 'US$ ' + n.toLocaleString('pt-BR') : '$' + n.toLocaleString('en-US'));
 
 const boot = $('#boot'), bootBar = $('#bootBar'), bootPct = $('#bootPct'), meter = $('#meter');
-const canvas = $('#gl'), tagsRoot = $('#tags'), heroStick = $('#heroStick'), hero = $('#top'), chromeEl = $('#chrome');
+const canvas = $('#gl'), tagsRoot = $('#tags'), heroStick = $('#heroStick'), hero = $('#top'), chromeEl = $('#chrome'), mbar = $('#mbar');
 const panels = [].slice.call(document.querySelectorAll('[data-panel]'));
 function setProgress(f){ bootBar.style.transform = 'scaleX(' + f + ')'; bootPct.textContent = 'LOADING ' + Math.round(f * 100) + '%'; }
 setProgress(0.25);
@@ -593,7 +961,7 @@ let lang = DEFAULT_LANG;
 try { const saved = localStorage.getItem('hs-lang'); if (saved && I18N[saved]) lang = saved; } catch (e) {}
 let rvIO;
 function observeReveal(){
-  if (!rvIO) rvIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); rvIO.unobserve(en.target); } }), { threshold: 0.12 });
+  if (!rvIO) rvIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); rvIO.unobserve(en.target); } }), { threshold: 0.1 });
   document.querySelectorAll('.rv:not(.in)').forEach(el => rvIO.observe(el));
 }
 function applyLang(){
@@ -605,6 +973,7 @@ function applyLang(){
   $('#stats').innerHTML = T.p3.stats.map(s => '<div><b>' + s[0] + '</b>' + s[1] + '</div>').join('');
   $('#legend').innerHTML = T.parts.map((p, i) => '<li><b>0' + (i + 1) + '</b>' + p[0] + '</li>').join('');
   tagEls.forEach((el, i) => { el.querySelector('b').innerHTML = '<span>0' + (i + 1) + '</span>' + T.parts[i][0]; el.querySelector('em').innerHTML = T.parts[i][1]; });
+  $('#marq').innerHTML = BRANDS.concat(BRANDS).map(b => '<span>' + b + '</span>').join('');
   T.models.list.forEach((m, i) => {
     const c = cardEls[i]; if (!c) return;
     c.querySelector('h3').textContent = m.name; c.querySelector('.len').textContent = m.len; c.querySelector('p').textContent = m.desc;
@@ -613,11 +982,22 @@ function applyLang(){
     c.querySelector('.rot').textContent = T.models.rot; c.querySelector('.go').textContent = T.models.go;
     const b = c.querySelector('.badge'); if (b) b.textContent = b.dataset.kind === 'top' ? T.models.badges.top : T.models.badges.new;
   });
+  renderCfgOpts(); updateCfg();
+  $('#band').innerHTML = T.fl.band.map(b => '<div><b>' + b[0] + '</b><span>' + b[1] + '</span></div>').join('');
+  $('#tiles').innerHTML = T.fl.tiles.map(t => '<div class="tile rv"><div class="ic">' + ICONS[t[0]] + '</div><h3>' + t[1] + '</h3><p>' + t[2] + '</p><div class="big">' + t[3] + '<small>' + t[4] + '</small></div></div>').join('');
   $('#steps').innerHTML = T.process.steps.map((s, i) => '<div class="step rv"><div class="n">0' + (i + 1) + '</div><div><h3>' + s[0] + '</h3><div class="d">' + s[1] + '</div></div><p>' + s[2] + '</p></div>').join('');
   $('#mats').innerHTML = T.mat.list.map((m, i) => '<div class="mat rv"><div class="sw sw--' + ['brick','concrete','steel'][i] + '"></div><h3>' + m[0] + '</h3><div class="spec">' + m[1] + '</div><p>' + m[2] + '</p></div>').join('');
+  const wfBox = (b, ink) => '<div class="box' + (ink ? ' ink' : '') + '"><div class="big">' + b.big + '<small>' + b.small + '</small></div><h3>' + b.h3 + '</h3><ul>' + b.items.map(i => '<li>' + i + '</li>').join('') + '</ul></div>';
+  $('#wf').innerHTML = wfBox(T.wf.w, true) + wfBox(T.wf.f, false);
+  const cell = v => v === 1 ? '<span class="yes">&#10003;</span>' : v === 'part' ? '<span class="part">' + T.cmp.part + '</span>' : '<span class="no"></span>';
+  $('#cmp').innerHTML = '<thead><tr>' + T.cmp.cols.map((c, i) => '<th' + (i === 1 ? ' class="us"' : '') + '>' + c + '</th>').join('') + '</tr></thead><tbody>' +
+    T.cmp.rows.map(r => '<tr><td>' + r[0] + '</td><td class="us">' + cell(r[1]) + '</td><td>' + cell(r[2]) + '</td><td>' + cell(r[3]) + '</td></tr>').join('') + '</tbody>';
   $('#quotes').innerHTML = T.quotes.list.map(q => '<blockquote class="q rv"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;' + q[0] + '&rdquo;</p><div class="q-who">' + q[1] + '</div></blockquote>').join('');
+  $('#cities').innerHTML = T.area.cities.map(c => '<li>' + c[0] + '<span>' + c[1] + '</span></li>').join('');
+  $('#mapPts').innerHTML = CITIES.map(c => (c[3] ? '<circle class="ring" cx="' + c[1] + '" cy="' + c[2] + '" r="3"/>' : '') + '<circle class="pt' + (c[3] ? ' hq' : '') + '" cx="' + c[1] + '" cy="' + c[2] + '" r="' + (c[3] ? 1.6 : 1.1) + '"/><text x="' + (c[1] + c[4]) + '" y="' + (c[2] + c[5]) + '" text-anchor="' + c[6] + '">' + c[0] + '</text>').join('');
+  $('#faqList').innerHTML = T.faq.list.map(f => '<details><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>').join('');
   const sel = $('#fModel'); const cur = sel.selectedIndex;
-  sel.innerHTML = '<option value="">' + T.form.any + '</option>' + T.models.list.map(m => '<option>' + m.name + '</option>').join('');
+  sel.innerHTML = '<option value="">' + T.form.any + '</option>' + T.models.list.map(m => '<option>' + m.name + '</option>').join('') + '<option value="custom">' + T.form.custom + '</option>';
   if (cur > 0) sel.selectedIndex = cur;
   observeReveal();
 }
@@ -628,6 +1008,7 @@ $('#lang').addEventListener('click', () => { lang = lang === 'pt' ? 'en' : 'pt';
 const CUES = [ [0.00, 0.00, 0.12, 0.20], [0.34, 0.42, 0.52, 0.60], [0.68, 0.76, 0.86, 0.92], [0.945, 1.00, 1.20, 1.30] ];
 const DRIFT = 22;
 let progress = 0, eased = 0, heroVisible = true;
+const darkSections = [].slice.call(document.querySelectorAll('.section--ink, .foot'));
 function readScroll(){
   const r = hero.getBoundingClientRect();
   const span = r.height - window.innerHeight;
@@ -635,7 +1016,13 @@ function readScroll(){
   heroVisible = r.bottom > 0;
   const max = document.documentElement.scrollHeight - window.innerHeight;
   meter.style.transform = 'scaleX(' + (max > 0 ? clamp(window.pageYOffset / max, 0, 1) : 0) + ')';
-  chromeEl.classList.toggle('solid', r.bottom < window.innerHeight * 0.5);
+  const past = r.bottom < window.innerHeight * 0.5;
+  chromeEl.classList.toggle('solid', past);
+  mbar.classList.toggle('on', past);
+  // header goes dark while a dark section sits under it
+  let dark = false; const y = 40;
+  for (const s of darkSections){ const b = s.getBoundingClientRect(); if (b.top <= y && b.bottom >= y){ dark = true; break; } }
+  chromeEl.classList.toggle('dark', dark);
 }
 function paint(){
   for (let i = 0; i < panels.length; i++){
@@ -696,15 +1083,16 @@ const black     = new THREE.MeshStandardMaterial({ color: 0x1b1a19, metalness: 0
 const cavityMat = new THREE.MeshStandardMaterial({ color: 0x2a2724, roughness: 1, side: THREE.BackSide });
 const basinMat  = new THREE.MeshStandardMaterial({ color: 0xb9bbba, metalness: 1, roughness: 0.4, side: THREE.BackSide });
 const grateMat  = new THREE.MeshStandardMaterial({ color: 0x3a3a3a, metalness: 0.8, roughness: 0.5 });
-function concreteMat(u, v){ const t = concreteTex.clone(); t.repeat.set(u, v); t.needsUpdate = true; return new THREE.MeshStandardMaterial({ map: t, roughness: 0.9, metalness: 0, envMapIntensity: 0.5 }); }
-function brickMat(u, v){ const t = brickTex.clone(); t.repeat.set(u, v); t.needsUpdate = true; return new THREE.MeshStandardMaterial({ map: t, roughness: 0.96, metalness: 0, envMapIntensity: 0.55 }); }
+/* one shared material per texture; each box scales its own UVs so 1 texture tile = 1 m on every face (no per-mesh texture clones, no extra GPU uploads) */
+const concreteShared = new THREE.MeshStandardMaterial({ map: concreteTex, roughness: 0.9, metalness: 0, envMapIntensity: 0.5 });
+const brickShared = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.96, metalness: 0, envMapIntensity: 0.55 });
+function scaleUV(geo, faces){ const uv = geo.attributes.uv; for (let f = 0; f < 6; f++){ const su = faces[f][0], sv = faces[f][1]; for (let i = f * 4; i < f * 4 + 4; i++) uv.setXY(i, uv.getX(i) * su, uv.getY(i) * sv); } uv.needsUpdate = true; return geo; }
+function texBox(w, h, d, mat, x, y, z){ const g = scaleUV(new THREE.BoxGeometry(w, h, d), [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]]); const m = new THREE.Mesh(g, mat); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; return m; }
+function concreteBox(w, h, d, x, y, z){ return texBox(w, h, d, concreteShared, x, y, z); }
 
 function box(w, h, d, mat, x = 0, y = 0, z = 0){ const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; return m; }
 function cyl(r, h, mat, x = 0, y = 0, z = 0, seg = 32){ const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), mat); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; return m; }
-function brickBox(w, h, d, x, y, z){
-  const mats = [brickMat(d, h), brickMat(d, h), brickMat(w, d), brickMat(w, d), brickMat(w, h), brickMat(w, h)];
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; return m;
-}
+function brickBox(w, h, d, x, y, z){ return texBox(w, h, d, brickShared, x, y, z); }
 function cavity(w, h, d, x, y, z){ const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), cavityMat); m.position.set(x, y, z); m.receiveShadow = true; return m; }
 function hoodGeometry(w, h, d){
   const pts = [[d / 2, 0], [d / 2, h * 0.34], [d / 2 - d * 0.42, h], [-d / 2, h], [-d / 2, 0]];
@@ -712,17 +1100,18 @@ function hoodGeometry(w, h, d){
   const g = new THREE.ExtrudeGeometry(s, { depth: w, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3 });
   g.translate(0, 0, -w / 2); g.rotateY(Math.PI / 2); return g;
 }
+function disposeTree(obj){ obj.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
 
 const BASE_H = 0.86, DEPTH = 0.75;
 
-/* --- appliance builders, shared by the hero and the model cards --- */
+/* --- appliance builders, shared by the hero, the model cards and the configurator --- */
 function mkGrill(w){
   const g = new THREE.Group();
   g.add(box(w, 0.30, 0.62, steel));
   g.add(box(w + 0.02, 0.02, 0.64, chromeM, 0, 0.15, 0));
   g.add(box(w, 0.17, 0.02, steelDark, 0, 0.065, 0.315));
   for (let i = 0; i < 12; i++) g.add(box(w - 0.06, 0.008, 0.012, grateMat, 0, 0.16, -0.24 + i * 0.043));
-  const n = w > 0.8 ? 4 : 3, sp = (w - 0.3) / (n - 1);
+  const n = w > 1.0 ? 5 : w > 0.8 ? 4 : 3, sp = (w - 0.3) / (n - 1);
   for (let i = 0; i < n; i++){ const x = -(w - 0.3) / 2 + i * sp;
     const ring = cyl(0.034, 0.016, chromeM, x, 0.06, 0.33); ring.rotation.x = Math.PI / 2; g.add(ring);
     const knob = cyl(0.026, 0.04, black, x, 0.06, 0.35); knob.rotation.x = Math.PI / 2; g.add(knob);
@@ -781,7 +1170,7 @@ function mkBurner(){
 function mkOven(w){
   const g = new THREE.Group();
   g.add(brickBox(w, 0.48, DEPTH, 0, 0.24, 0));
-  const dome = new THREE.Mesh(new THREE.SphereGeometry(0.36, 32, 18, 0, Math.PI * 2, 0, Math.PI / 2), brickMat(2, 1)); dome.position.set(0, 0.48, -0.04); dome.castShadow = dome.receiveShadow = true; g.add(dome);
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(0.36, 32, 18, 0, Math.PI * 2, 0, Math.PI / 2), brickShared); dome.position.set(0, 0.48, -0.04); dome.castShadow = dome.receiveShadow = true; g.add(dome);
   g.add(box(0.36, 0.22, 0.06, black, 0, 0.2, DEPTH / 2 + 0.01));
   g.add(box(0.5, 0.06, 0.2, steelDark, 0, 0.51, 0.3));
   g.add(cyl(0.05, 0.4, steelDark, 0, 0.95, -0.15)); g.add(cyl(0.07, 0.03, steelDark, 0, 1.16, -0.15)); return g;
@@ -791,21 +1180,51 @@ function mkStool(){
   g.add(cyl(0.17, 0.035, black, 0, 0.72, 0)); g.add(cyl(0.022, 0.7, chromeM, 0, 0.36, 0)); g.add(cyl(0.16, 0.015, chromeM, 0, 0.008, 0)); return g;
 }
 
+/* --- generic kitchen builder: a list of modules laid left to right --- */
+function buildRun(mods, bar){
+  const g = new THREE.Group(); const L = mods.reduce((s, m) => s + m[1], 0); let x = -L / 2;
+  for (const [t, w] of mods){ const cx = x + w / 2;
+    if (t === 'col' || t === 'sink' || t === 'burner'){ g.add(brickBox(w, BASE_H, DEPTH, cx, BASE_H / 2, 0)); }
+    else if (t === 'oven'){ const o = mkOven(w); o.position.set(cx, BASE_H + 0.06, 0); g.add(o); g.add(brickBox(w, BASE_H, DEPTH, cx, BASE_H / 2, 0)); g.add(concreteBox(w + 0.06, 0.06, DEPTH + 0.06, cx, BASE_H + 0.03, 0)); }
+    else { g.add(cavity(w, BASE_H, 0.60, cx, BASE_H / 2, 0.075)); }
+    if (t === 'grill'){ const gw = w - 0.08; const gr = mkGrill(gw); gr.position.set(cx, 0.95, 0); g.add(gr); const hd = mkHood(gw); hd.position.set(cx, 1.10, 0); g.add(hd); const dr = mkDoors(w - 0.02); dr.position.set(cx, 0.40, DEPTH / 2); g.add(dr); }
+    if (t === 'keg'){ const k = mkKeg(); k.position.set(cx, 0, 0); g.add(k); const tw = mkTower(); tw.position.set(cx, BASE_H + 0.06, 0); g.add(tw); }
+    if (t === 'drawers'){ const d = mkDrawers(w - 0.02); d.position.set(cx, 0.40, DEPTH / 2); g.add(d); }
+    if (t === 'sink'){ const s = mkSink(); s.position.set(cx, BASE_H + 0.06, 0); g.add(s); }
+    if (t === 'burner'){ const b = mkBurner(); b.position.set(cx, BASE_H + 0.06, 0); g.add(b); }
+    x += w; }
+  g.add(brickBox(L, BASE_H, 0.15, 0, BASE_H / 2, -0.30));
+  const ovenAt = mods.findIndex(m => m[0] === 'oven');
+  const counterL = ovenAt >= 0 ? L - mods[ovenAt][1] : L, counterX = ovenAt >= 0 ? -mods[ovenAt][1] / 2 : 0;
+  g.add(concreteBox(counterL + 0.12, 0.06, DEPTH + 0.09, counterX, BASE_H + 0.03, 0));
+  if (bar){ g.add(concreteBox(L + 0.12, 0.06, 0.5, 0, BASE_H + 0.03 + 0.25, -0.55)); g.add(brickBox(L, 0.25, 0.15, 0, BASE_H + 0.125, -0.30));
+    [-1, 0, 1].forEach(i => { const s = mkStool(); s.position.set(i * 0.9, 0, -0.95); g.add(s); }); }
+  g.userData.L = L; return g;
+}
+function buildKitchen(v){
+  const g = new THREE.Group(); const main = buildRun(v.mods, v.bar); g.add(main);
+  let Lw = 0;
+  if (v.wing){ const w = buildRun(v.wing, false); Lw = w.userData.L; w.rotation.y = Math.PI / 2; w.position.set(main.userData.L / 2 + 0.3, 0, DEPTH / 2 + Lw / 2 - 0.7); g.add(w); }
+  const b = new THREE.Box3().setFromObject(g); const c = b.getCenter(new THREE.Vector3()); g.position.set(-c.x, 0, -c.z);
+  const pivot = new THREE.Group(); pivot.add(g); pivot.userData.radius = b.getSize(new THREE.Vector3()).length() / 2; pivot.userData.L = main.userData.L; pivot.userData.Lw = Lw; return pivot;
+}
+
 /* ------------------------------------------------------------ hero scene */
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
 renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-function lightScene(scene){
-  const sun = new THREE.DirectionalLight(0xfff3e4, 2.6); sun.position.set(3.5, 6.5, 4.5); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4.5, near: 1, far: 20 }); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02; sun.shadow.radius = 4;
-  scene.add(sun); scene.add(new THREE.HemisphereLight(0xfaf7f2, 0xb9b3a8, 0.45));
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: 0.16 })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+function lightScene(scene, dark){
+  const sun = new THREE.DirectionalLight(dark ? 0xffe2c2 : 0xfff3e4, dark ? 3.2 : 2.6); sun.position.set(3.5, 6.5, 4.5); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 20 }); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02; sun.shadow.radius = 4;
+  scene.add(sun); scene.add(new THREE.HemisphereLight(dark ? 0x8a8078 : 0xfaf7f2, dark ? 0x2a2320 : 0xb9b3a8, dark ? 0.35 : 0.45));
+  if (dark){ const rim = new THREE.DirectionalLight(0xff8a4a, 1.6); rim.position.set(-4, 3, -5); scene.add(rim); }
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: dark ? 0.5 : 0.16 })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 }
 const scene = new THREE.Scene();
 scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-lightScene(scene);
+lightScene(scene, false);
 const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
 
 const rig = new THREE.Group(); scene.add(rig);
@@ -815,7 +1234,7 @@ function part(obj, home, dir, anchor, tilt = 0){ obj.position.copy(home); rig.ad
   g.add(brickBox(0.85, BASE_H, DEPTH, -1.275, BASE_H / 2, 0)); g.add(brickBox(0.30, BASE_H, DEPTH, 0.30, BASE_H / 2, 0)); g.add(brickBox(0.55, BASE_H, DEPTH, 1.425, BASE_H / 2, 0)); g.add(brickBox(3.40, BASE_H, 0.15, 0, BASE_H / 2, -0.30));
   g.add(cavity(1.0, BASE_H, 0.60, -0.35, BASE_H / 2, 0.075)); g.add(cavity(0.7, BASE_H, 0.60, 0.80, BASE_H / 2, 0.075));
   part(g, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -0.30, 0), new THREE.Vector3(-1.35, 0.45, 0.39)); }
-{ const g = new THREE.Group(); g.add(box(3.52, 0.06, 0.84, concreteMat(3.5, 0.9), 0, BASE_H + 0.03, 0));
+{ const g = new THREE.Group(); g.add(concreteBox(3.52, 0.06, 0.84, 0, BASE_H + 0.03, 0));
   part(g, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.62, 0), new THREE.Vector3(1.55, BASE_H + 0.04, 0.42)); }
 part(mkGrill(0.92), new THREE.Vector3(-0.35, 0.95, 0), new THREE.Vector3(0, 0.36, 1.05), new THREE.Vector3(0.50, 0.03, 0.33));
 part(mkHood(0.92), new THREE.Vector3(-0.35, 1.10, 0), new THREE.Vector3(0, 0.85, -0.30), new THREE.Vector3(0, 0.30, 0.10), -0.32);
@@ -843,8 +1262,8 @@ window.addEventListener('pointermove', e => { mx = (e.clientX / window.innerWidt
 heroStick.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.target.closest('a,button')) return; dragging = true; lastX = e.clientX; });
 window.addEventListener('pointerup', () => { dragging = false; });
 
-function resize(){ const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = camera.aspect < 0.8 ? 40 : 30; camera.updateProjectionMatrix(); }
-window.addEventListener('resize', () => { resize(); readScroll(); }); resize();
+function resize(){ const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = camera.aspect < 0.8 ? 40 : 30; camera.updateProjectionMatrix(); cfgResize(); }
+window.addEventListener('resize', () => { resize(); readScroll(); });
 
 const clock = new THREE.Clock(); let lastEased = 0;
 function frame(){
@@ -867,7 +1286,7 @@ function frame(){
     renderer.render(scene, camera);
     paint(); paintTags(ramp(e, 0.55, 0.95));
   }
-  tickCards(dt);
+  tickCards(dt); tickCfg(dt);
   requestAnimationFrame(frame);
 }
 
@@ -880,40 +1299,16 @@ const VARIANTS = [
   { badge:'new', mods:[['col',.6],['grill',1.0],['col',.3],['drawers',.9],['col',.3],['oven',1.1]] },
   { mods:[['col',.5],['burner',.5],['grill',1.15],['col',.25],['drawers',.8],['sink',.7],['keg',.7]] }
 ];
-function buildRun(mods, bar){
-  const g = new THREE.Group(); const L = mods.reduce((s, m) => s + m[1], 0); let x = -L / 2;
-  for (const [t, w] of mods){ const cx = x + w / 2;
-    if (t === 'col' || t === 'sink' || t === 'burner'){ g.add(brickBox(w, BASE_H, DEPTH, cx, BASE_H / 2, 0)); }
-    else if (t === 'oven'){ const o = mkOven(w); o.position.set(cx, BASE_H + 0.06, 0); g.add(o); g.add(brickBox(w, BASE_H, DEPTH, cx, BASE_H / 2, 0)); g.add(box(w + 0.06, 0.06, DEPTH + 0.06, concreteMat(w, 0.8), cx, BASE_H + 0.03, 0)); }
-    else { g.add(cavity(w, BASE_H, 0.60, cx, BASE_H / 2, 0.075)); }
-    if (t === 'grill'){ const gw = w - 0.08; const gr = mkGrill(gw); gr.position.set(cx, 0.95, 0); g.add(gr); const hd = mkHood(gw); hd.position.set(cx, 1.10, 0); g.add(hd); const dr = mkDoors(w - 0.02); dr.position.set(cx, 0.40, DEPTH / 2); g.add(dr); }
-    if (t === 'keg'){ const k = mkKeg(); k.position.set(cx, 0, 0); g.add(k); const tw = mkTower(); tw.position.set(cx, BASE_H + 0.06, 0); g.add(tw); }
-    if (t === 'drawers'){ const d = mkDrawers(w - 0.02); d.position.set(cx, 0.40, DEPTH / 2); g.add(d); }
-    if (t === 'sink'){ const s = mkSink(); s.position.set(cx, BASE_H + 0.06, 0); g.add(s); }
-    if (t === 'burner'){ const b = mkBurner(); b.position.set(cx, BASE_H + 0.06, 0); g.add(b); }
-    x += w; }
-  g.add(brickBox(L, BASE_H, 0.15, 0, BASE_H / 2, -0.30));
-  const ovenAt = mods.findIndex(m => m[0] === 'oven');
-  const counterL = ovenAt >= 0 ? L - mods[ovenAt][1] : L, counterX = ovenAt >= 0 ? -mods[ovenAt][1] / 2 : 0;
-  g.add(box(counterL + 0.12, 0.06, DEPTH + 0.09, concreteMat(counterL, 0.9), counterX, BASE_H + 0.03, 0));
-  if (bar){ g.add(box(L + 0.12, 0.06, 0.5, concreteMat(L, 0.5), 0, BASE_H + 0.03 + 0.25, -0.55)); g.add(brickBox(L, 0.25, 0.15, 0, BASE_H + 0.125, -0.30));
-    [-1, 0, 1].forEach(i => { const s = mkStool(); s.position.set(i * 0.9, 0, -0.95); g.add(s); }); }
-  g.userData.L = L; return g;
-}
-function buildVariant(v){
-  const g = new THREE.Group(); const main = buildRun(v.mods, v.bar); g.add(main);
-  if (v.wing){ const w = buildRun(v.wing, false); const Lw = w.userData.L; w.rotation.y = Math.PI / 2; w.position.set(main.userData.L / 2 + 0.3, 0, DEPTH / 2 + Lw / 2 - 0.7); g.add(w); }
-  const b = new THREE.Box3().setFromObject(g); const c = b.getCenter(new THREE.Vector3()); g.position.set(-c.x, 0, -c.z);
-  const pivot = new THREE.Group(); pivot.add(g); pivot.userData.radius = b.getSize(new THREE.Vector3()).length() / 2; return pivot;
-}
-
-const thumb = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 const TW = 560, TH = 400, TDPR = Math.min(window.devicePixelRatio || 1, 2);
-thumb.setPixelRatio(TDPR); thumb.setSize(TW, TH, false);
-thumb.outputColorSpace = THREE.SRGBColorSpace; thumb.toneMapping = THREE.ACESFilmicToneMapping; thumb.toneMappingExposure = 1.05;
-thumb.shadowMap.enabled = true; thumb.shadowMap.type = THREE.PCFSoftShadowMap;
-const tScene = new THREE.Scene(); tScene.environment = new THREE.PMREMGenerator(thumb).fromScene(new RoomEnvironment(), 0.04).texture; lightScene(tScene);
-const tCam = new THREE.PerspectiveCamera(26, TW / TH, 0.1, 100);
+let thumb, tScene, tCam;   /* created after the hero is on screen, so the preloader never waits for them */
+function initThumb(){
+  thumb = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  thumb.setPixelRatio(TDPR); thumb.setSize(TW, TH, false);
+  thumb.outputColorSpace = THREE.SRGBColorSpace; thumb.toneMapping = THREE.ACESFilmicToneMapping; thumb.toneMappingExposure = 1.05;
+  thumb.shadowMap.enabled = true; thumb.shadowMap.type = THREE.PCFSoftShadowMap;
+  tScene = new THREE.Scene(); tScene.environment = new THREE.PMREMGenerator(thumb).fromScene(new RoomEnvironment(), 0.04).texture; lightScene(tScene, false);
+  tCam = new THREE.PerspectiveCamera(26, TW / TH, 0.1, 100);
+}
 const cards = [], cardEls = [];
 const modelsRoot = $('#models');
 VARIANTS.forEach((v, i) => {
@@ -932,7 +1327,8 @@ VARIANTS.forEach((v, i) => {
   el.querySelector('.go').addEventListener('click', () => { $('#fModel').selectedIndex = i + 1; });
 });
 function renderCard(c){
-  if (!c.obj) c.obj = buildVariant(VARIANTS[cards.indexOf(c)]);
+  if (!thumb) return;
+  if (!c.obj) c.obj = buildKitchen(VARIANTS[cards.indexOf(c)]);
   tScene.add(c.obj); c.obj.rotation.y = c.yaw;
   const R = c.obj.userData.radius, d = R / Math.sin(THREE.MathUtils.degToRad(tCam.fov) / 2) * 0.86, pitch = 0.32;
   tCam.position.set(0, 0.55 + d * Math.sin(pitch), d * Math.cos(pitch)); tCam.lookAt(0, 0.55, 0);
@@ -953,14 +1349,96 @@ function tickCards(dt){
 const cardIO = new IntersectionObserver(entries => entries.forEach(en => { const c = cards[cardEls.indexOf(en.target)]; c.vis = en.isIntersecting; if (c.vis && c.dirty) renderCard(c); }), { rootMargin: '240px' });
 cardEls.forEach(el => cardIO.observe(el));
 
+/* ------------------------------------------------------------ configurator: live rebuild + live price */
+const cfgState = { grill: 'g36', mods: new Set(['keg']), layout: 'straight' };
+const PRICE = { base: 9500, perM: 1800, g32: 2400, g36: 3200, g42: 4600, keg: 2900, sink: 1400, burner: 900, drawers: 1200, oven: 6800, bar: 2600, l: 3400 };
+const cfgCanvas = $('#cfgCanvas'), cfgView = $('#cfgView');
+let cfgR, cScene, cCam;
+function initCfgR(){
+  cfgR = new THREE.WebGLRenderer({ canvas: cfgCanvas, antialias: true, alpha: true });
+  cfgR.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  cfgR.outputColorSpace = THREE.SRGBColorSpace; cfgR.toneMapping = THREE.ACESFilmicToneMapping; cfgR.toneMappingExposure = 1.0;
+  cfgR.shadowMap.enabled = true; cfgR.shadowMap.type = THREE.PCFSoftShadowMap;
+  cScene = new THREE.Scene(); cScene.environment = new THREE.PMREMGenerator(cfgR).fromScene(new RoomEnvironment(), 0.04).texture; lightScene(cScene, true);
+  cCam = new THREE.PerspectiveCamera(26, 1.6, 0.1, 100);
+  if (cfg.obj) cScene.add(cfg.obj);
+  cfgResize();
+}
+const cfg = { obj: null, yaw: 0.5, vel: 0, dragging: false, lastX: 0, dirty: true, vis: false, idle: 0 };
+function cfgResize(){ if (!cfgR) return; const w = cfgView.clientWidth || 800, h = cfgView.clientHeight || 500; cfgR.setSize(w, h, false); cCam.aspect = w / h; cCam.updateProjectionMatrix(); cfg.dirty = true; }
+function cfgSpec(){
+  const gw = cfgState.grill === 'g32' ? 0.9 : cfgState.grill === 'g42' ? 1.15 : 1.0;
+  const m = cfgState.mods, L = cfgState.layout === 'l';
+  const mods = [['col', .55]];
+  if (m.has('burner')) mods.push(['burner', .5]);
+  mods.push(['grill', gw], ['col', .3]);
+  if (m.has('drawers')) mods.push(['drawers', .8]);
+  if (m.has('sink') && !L) mods.push(['sink', .7]);
+  if (m.has('keg')) mods.push(['keg', .7]);
+  mods.push(['col', .55]);
+  if (m.has('oven')) mods.push(['col', .2], ['oven', 1.1]);
+  const spec = { mods, bar: cfgState.layout === 'bar' };
+  if (L) spec.wing = [['col', .5], m.has('sink') ? ['sink', .8] : ['col', .8], ['col', .5]];
+  return spec;
+}
+function cfgPrice(){
+  const o = cfg.obj.userData, len = o.L + o.Lw;
+  let p = PRICE.base + Math.round(len * PRICE.perM) + PRICE[cfgState.grill];
+  cfgState.mods.forEach(k => p += PRICE[k]);
+  if (cfgState.layout === 'bar') p += PRICE.bar; if (cfgState.layout === 'l') p += PRICE.l;
+  return { p: Math.round(p / 100) * 100, len };
+}
+function updateCfg(){
+  if (cfg.obj){ if (cScene) cScene.remove(cfg.obj); disposeTree(cfg.obj); }
+  cfg.obj = buildKitchen(cfgSpec()); cfg.obj.rotation.y = cfg.yaw; if (cScene) cScene.add(cfg.obj); cfg.dirty = true;
+  const T = I18N[lang].cfg, { p, len } = cfgPrice();
+  $('#cfgPrice').innerHTML = money(p) + '<small>±8%</small>';
+  $('#cfgFin').innerHTML = T.fin.replace('{m}', money(Math.round(p / 24)));
+  $('#cfgLen').textContent = lang === 'pt' ? len.toFixed(1).replace('.', ',') + ' m' : (len * 3.281).toFixed(0) + ' ft';
+  $('#cfgDays').textContent = (cfgState.mods.has('oven') || cfgState.layout === 'l') ? T.days4 : T.days;
+  document.querySelectorAll('#cfgOpts .chip').forEach(ch => { const k = ch.dataset.group, v = ch.dataset.val; ch.classList.toggle('on', k === 'mods' ? cfgState.mods.has(v) : cfgState[k] === v); });
+}
+function renderCfgOpts(){
+  const T = I18N[lang].cfg;
+  $('#cfgOpts').innerHTML = T.groups.map(g => '<div class="opt"><h4>' + g.name + (g.single ? '' : '<small>' + (lang === 'pt' ? 'escolha vários' : 'pick any') + '</small>') + '</h4><div class="chips">' +
+    g.opts.map(o => '<button class="chip" data-group="' + g.key + '" data-val="' + o[0] + '">' + o[1] + (o[2] ? '<small>' + o[2] + '</small>' : '') + '</button>').join('') + '</div></div>').join('');
+  document.querySelectorAll('#cfgOpts .chip').forEach(ch => ch.addEventListener('click', () => {
+    const k = ch.dataset.group, v = ch.dataset.val;
+    if (k === 'mods'){ cfgState.mods.has(v) ? cfgState.mods.delete(v) : cfgState.mods.add(v); } else cfgState[k] = v;
+    updateCfg();
+  }));
+}
+function cfgSummary(){
+  const T = I18N[lang].cfg, names = {};
+  T.groups.forEach(g => g.opts.forEach(o => names[o[0]] = o[1]));
+  const { p, len } = cfgPrice();
+  return [T.groups[0].name + ': ' + names[cfgState.grill], T.groups[1].name + ': ' + ([...cfgState.mods].map(k => names[k]).join(', ') || '-'), T.groups[2].name + ': ' + names[cfgState.layout], T.hud1 + ': ' + $('#cfgLen').textContent, T.k1 + ': ' + money(p)].join('\n');
+}
+$('#cfgSend').addEventListener('click', () => { const sel = $('#fModel'); sel.value = 'custom'; $('#fMsg').value = cfgSummary(); });
+cfgView.addEventListener('pointerdown', e => { cfg.dragging = true; cfg.lastX = e.clientX; cfg.vel = 0; cfgView.setPointerCapture(e.pointerId); });
+cfgView.addEventListener('pointermove', e => { if (!cfg.dragging) return; cfg.vel = (e.clientX - cfg.lastX) * 0.006; cfg.yaw += cfg.vel; cfg.lastX = e.clientX; cfg.dirty = true; cfg.idle = 0; });
+window.addEventListener('pointerup', () => { cfg.dragging = false; });
+function tickCfg(dt){
+  if (!cfgR || !cfg.vis || !cfg.obj) return;
+  if (!cfg.dragging){ cfg.vel *= Math.exp(-dt * 4); if (Math.abs(cfg.vel) > 0.0005){ cfg.yaw += cfg.vel; cfg.dirty = true; } cfg.idle += dt; if (cfg.idle > 2.5){ cfg.yaw += dt * 0.12; cfg.dirty = true; } }
+  if (!cfg.dirty) return;
+  cfg.obj.rotation.y = cfg.yaw;
+  const R = cfg.obj.userData.radius, d = R / Math.sin(THREE.MathUtils.degToRad(cCam.fov) / 2) * 0.82, pitch = 0.30;
+  cCam.position.set(0, 0.5 + d * Math.sin(pitch), d * Math.cos(pitch)); cCam.lookAt(0, 0.5, 0);
+  cfgR.render(cScene, cCam); cfg.dirty = false;
+}
+new IntersectionObserver(es => es.forEach(en => { cfg.vis = en.isIntersecting; if (cfg.vis){ cfgResize(); cfg.idle = 0; } }), { rootMargin: '120px' }).observe(cfgView);
+
 /* ------------------------------------------------------------ form -> mailto */
 $('#quoteForm').addEventListener('submit', e => {
   e.preventDefault(); const T = I18N[lang].form, f = e.target;
-  const body = [T.name + ': ' + f.name.value, T.email + ': ' + f.email.value, T.city + ': ' + f.city.value, T.model + ': ' + (f.model.value || T.any), '', f.message.value].join('\n');
+  const model = f.model.value === 'custom' ? T.custom : (f.model.value || T.any);
+  const body = [T.name + ': ' + f.name.value, T.email + ': ' + f.email.value, T.city + ': ' + f.city.value, T.model + ': ' + model, '', f.message.value].join('\n');
   location.href = 'mailto:hello@hearthandslab.com?subject=' + encodeURIComponent(T.subject) + '&body=' + encodeURIComponent(body);
 });
 
 /* ------------------------------------------------------------ boot */
+resize();
 applyLang();
 window.addEventListener('scroll', readScroll, { passive: true });
 readScroll(); paint(); eased = progress; lastEased = eased;
@@ -969,6 +1447,8 @@ setProgress(0.85);
 requestAnimationFrame(() => {
   frame(); setProgress(1); window.__hs_ready = true;
   setTimeout(() => boot.classList.add('done'), 250);
+  setTimeout(() => { initThumb(); cards.forEach(c => { if (c.vis) renderCard(c); }); }, 400);
+  setTimeout(() => { initCfgR(); cfg.dirty = true; }, 900);
 });
 </script>
 </body>
